@@ -31,8 +31,18 @@
 	// 根据设备类型设置背景图片
 	function setBackgroundImage() {
 		const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-		const imageUrl = isMobile ? 'https://bing.img.run/m.php' : 'https://bing.img.run/1920x1080.php';
-		document.body.style.backgroundImage = `url('${imageUrl}')`;
+		const apiUrl = isMobile ? 'https://bing.img.run/m.php' : 'https://bing.img.run/1920x1080.php';
+		const fallbackUrl = isMobile ? 'images/Mobile.jpg' : 'images/1.jpg';
+
+		const img = new Image();
+		img.src = apiUrl;
+		img.onload = function() {
+			document.body.style.backgroundImage = `url('${apiUrl}')`;
+		};
+		img.onerror = function() {
+			document.body.style.backgroundImage = `url('${fallbackUrl}')`;
+		};
+
 		document.body.style.backgroundSize = 'cover';
 		document.body.style.backgroundPosition = 'center center';
 		document.body.style.backgroundAttachment = 'fixed';
