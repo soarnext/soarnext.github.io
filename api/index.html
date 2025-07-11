@@ -25,9 +25,6 @@
             font-size: 24px;
             color: #333;
         }
-        b {
-            color: #ff4d4f;
-        }
         .loader {
             border: 4px solid #f3f3f3;
             border-radius: 50%;
@@ -48,37 +45,40 @@
         <h2>正在安全跳转...</h2>
         <div class="loader"></div>
     </div>
-    <script src="../assets/js/base32.js"></script>
+
     <script>
-    var url = document.location.toString();
-    var urlParmStr = base32.decode(url.slice(url.indexOf('=')+1));
-    var ua = navigator.userAgent.toLowerCase();
-    var isQQ = ua.indexOf('qq') != -1;
-    var isWeixin = ua.indexOf('micromessenger') != -1;
-    var isAndroid = ua.indexOf('android') != -1;
-    var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
+        const WORKER_URL = 'http://dl.api.yxc.us.kg/';
 
-    var notice_openBrowser = "<h2>请在外部浏览器中打开</h2><p>点击右上角的菜单按钮，然后选择“在浏览器中打开”以继续访问。</p>"
+        async function handleRedirect() {
+            const tipsElement = document.getElementById('tips');
+            const params = new URLSearchParams(window.location.search);
+            const shortId = params.get('id');
 
-    // 判断是不是在微信客户端打开
-    if(isWeixin || isQQ) {
-    // 判断是在Android的微信客户端还是Ios的微信客户端
-    if (isAndroid) {
-    document.getElementById("tips").innerHTML=notice_openBrowser;
-    }else if (isIos) {
-    document.getElementById("tips").innerHTML=notice_openBrowser;
-    }else{
-    document.getElementById("tips").innerHTML=notice_openBrowser;
-    }
-    } else {
-    // 不是微信客户端，直接可以访问链接
-    if (urlParmStr == url){
-        urlParmStr = "https://github.com/soarnext/soarnext.github.io";
-    }
-    console.log(urlParmStr);
-    location.href=urlParmStr;
-    }
-</script>
-    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"K8YSQIj3WDtj9gG6",ck:"K8YSQIj3WDtj9gG6"})</script>
+            if (!shortId) {
+                tipsElement.innerHTML = '<h2>无效的链接</h2><p>无法找到对应的链接。</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${WORKER_URL}${shortId}`);
+                if (!response.ok) {
+                    throw new Error('Link not found or API error.');
+                }
+                const data = await response.json();
+                
+                if (data && data.url) {
+                    // Redirect to the long URL
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('Invalid data format from API.');
+                }
+            } catch (error) {
+                console.error('Redirect error:', error);
+                tipsElement.innerHTML = '<h2>链接已失效</h2><p>抱歉，无法找到您要访问的页面。</p>';
+            }
+        }
+
+        handleRedirect();
+    </script>
 </body>
 </html>
