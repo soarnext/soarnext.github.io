@@ -7,9 +7,10 @@
 </head>
 <body>
     <div id="tips" style="font-size:25px;text-align: center;line-height: 50px;"></div>
+    <script src="../assets/js/base32.js"></script>
     <script>
     var url = document.location.toString();
-    var urlParmStr = url.slice(url.indexOf('=')+1);
+    var urlParmStr = base32.decode(url.slice(url.indexOf('=')+1));
     var ua = navigator.userAgent.toLowerCase();
     var isQQ = ua.indexOf('qq') != -1;
     var isWeixin = ua.indexOf('micromessenger') != -1;
