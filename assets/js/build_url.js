@@ -1,5 +1,5 @@
 // --- Configuration ---
-const WORKER_URL = 'http://dl.api.yxc.us.kg/';
+const WORKER_URL = 'https://dl.api.yxc.us.kg/';
 const GITHUB_PAGES_URL = 'https://soarnext.github.io/';
 
 /**
