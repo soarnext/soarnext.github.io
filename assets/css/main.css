@@ -51,7 +51,8 @@ body {
   justify-content: center;
   align-items: center;
   padding: 2em; /* Adjust padding for overall body */
-  overflow: hidden; /* Prevent scrolling */
+  overflow-y: auto; /* Prevent scrolling */
+  overflow-x: hidden;
   text-align: center;
 }
   body.is-preload *, body.is-preload *:before, body.is-preload *:after {
