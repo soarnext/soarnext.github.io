@@ -929,3 +929,80 @@ button,
       margin-top: 2em;
     }
   }
+
+/* Redirect Page Styles */
+body.redirect-mode {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: sans-serif;
+  color: #333; /* Default text color for redirect page */
+}
+
+#redirect-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#tips {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #333; /* Ensure tips text is dark */
+}
+
+#tips h2, #tips p {
+  color: #333; /* Ensure headings and paragraphs are dark */
+}
+
+#tips a {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#redirect-footer {
+  margin-top: auto;
+  padding: 2em 0;
+  text-align: center;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.5); /* Footer text color */
+}
+
+#redirect-footer .copyright {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#redirect-footer .copyright a {
+  color: inherit;
+  text-decoration: none;
+}

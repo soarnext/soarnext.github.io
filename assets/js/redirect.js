@@ -1,0 +1,68 @@
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    const shortId = params.get('id');
+
+    if (shortId) {
+        document.title = '跳转中...';
+        document.body.className = 'redirect-mode'; // Add class for external CSS
+        document.body.innerHTML = `
+            <div id="redirect-container">
+                <div id="tips">
+                    <h2>正在安全跳转...</h2>
+                    <div class="loader"></div>
+                </div>
+                <footer id="redirect-footer">
+                    <ul class="copyright">
+                        <li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank">xiaosoar</a></li>
+                    </ul>
+                </footer>
+            </div>
+        `;
+        
+        const ua = navigator.userAgent.toLowerCase();
+        const isWeixin = ua.indexOf('micromessenger') !== -1;
+        const isQQ = ua.indexOf('qq') !== -1;
+        const isMobile = /iphone|ipad|ipod|android/.test(ua);
+
+        if (isWeixin || isQQ) {
+            let instructionHTML = '<h2>请在外部浏览器中打开</h2>';
+            if (isMobile) {
+                instructionHTML += '<p>点击右上角的菜单按钮 (通常是三个点)，<br>然后选择“在浏览器中打开”。</p>';
+            } else {
+                instructionHTML += `<a href="${window.location.href}" target="_blank">
+                                    <div style="margin-bottom: 1em; font-size: 48px;"><i class="fas fa-globe"></i></div>
+                                    <p>请点击图标或复制网址，<br>并在您电脑的浏览器中打开。</p>
+                                 </a>`;
+            }
+            document.getElementById('tips').innerHTML = instructionHTML;
+        } else {
+            const WORKER_URL = 'https://dl.api.yxc.us.kg/';
+            fetch(`${WORKER_URL}${shortId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            let message = '链接未找到或已失效。';
+                            if (err && err.error) {
+                                if (err.error.includes('expired')) message = '此链接已过期。';
+                                if (err.error.includes('maximum number of visits')) message = '此链接已达到最大访问次数。';
+                            }
+                            throw new Error(message);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.url) {
+                        window.location.href = data.url;
+                    } else {
+                        throw new Error('从服务器返回的数据格式无效。');
+                    }
+                })
+                .catch(error => {
+                    console.error('Redirect error:', error);
+                    document.getElementById('tips').innerHTML = `<h2>跳转失败</h2><p>${error.message}</p>`;
+                });
+        }
+    }
+    // If no 'id', the script does nothing and the rest of the page loads normally.
+})();
