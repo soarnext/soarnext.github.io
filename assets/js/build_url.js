@@ -7,8 +7,13 @@ const GITHUB_PAGES_URL = 'https://soarnext.github.io/';
  */
 async function build_url() {
     const urlInput = document.querySelector('#url');
-    const longUrl = urlInput.value.trim();
+    const expiresInHoursInput = document.querySelector('#expiresInHours');
+    const maxVisitsInput = document.querySelector('#maxVisits');
     const resultElement = document.getElementById('b_url');
+
+    const longUrl = urlInput.value.trim();
+    const expiresInHours = parseFloat(expiresInHoursInput.value) || null;
+    const maxVisits = parseInt(maxVisitsInput.value, 10) || null;
 
     if (longUrl === "" || !isValidHttpUrl(longUrl)) {
         resultElement.innerHTML = `<span style="color: #ff4d4f;">请输入有效的链接（以 http/https 开头）。</span>`;
@@ -18,17 +23,24 @@ async function build_url() {
     resultElement.innerHTML = '正在生成短链接...';
 
     try {
+        const payload = {
+            url: longUrl,
+            expiresInHours: expiresInHours,
+            maxVisits: maxVisits
+        };
+
         const response = await fetch(WORKER_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url: longUrl })
+            body: JSON.stringify(payload)
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error(`API Error: ${response.statusText}`);
+            throw new Error(data.error || `API Error: ${response.statusText}`);
         }
 
-        const data = await response.json();
         const shortUrl = new URL(`?id=${data.id}`, GITHUB_PAGES_URL).href;
 
         resultElement.innerHTML = `
@@ -38,13 +50,12 @@ async function build_url() {
 
     } catch (error) {
         console.error('Error generating short URL:', error);
-        resultElement.innerHTML = `<span style="color: #ff4d4f;">生成失败，请检查您的 Worker 是否已正确部署和配置。</span>`;
+        resultElement.innerHTML = `<span style="color: #ff4d4f;">生成失败：${error.message}</span>`;
     }
 }
 
 /**
  * Copies the given text to the user's clipboard.
- * @param {string} text The text to copy.
  */
 function copyToClipboard(text) {
     if (navigator.clipboard) {
@@ -55,7 +66,6 @@ function copyToClipboard(text) {
             alert('复制失败。');
         });
     } else {
-        // Fallback for older browsers
         const textArea = document.createElement('textarea');
         textArea.value = text;
         document.body.appendChild(textArea);
@@ -74,8 +84,6 @@ function copyToClipboard(text) {
 
 /**
  * Validates if a string is a valid HTTP/HTTPS URL.
- * @param {string} string The string to validate.
- * @returns {boolean} True if the URL is valid, false otherwise.
  */
 function isValidHttpUrl(string) {
     try {
