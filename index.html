@@ -26,16 +26,16 @@
 			</form>
 
 			<!-- Advanced Options -->
-			<div id="advanced-options" style="margin-top: 1em;">
-				<a href="#" onclick="toggleAdvanced(); return false;" style="color: #fff; border-bottom: 1px dotted #fff;">高级选项</a>
-				<div id="advanced-fields" style="visibility: hidden; opacity: 0; max-height: 0; overflow: hidden; margin-top: 1em; background: rgba(255,255,255,0.05); border-radius: 8px; transition: visibility 0.3s, opacity 0.3s, max-height 0.3s ease-in-out, padding 0.3s ease-in-out;">
-					<div style="margin-bottom: 1em;">
-						<label for="expiresInHours" style="display: block; margin-bottom: .5em;">过期时间 (小时)</label>
-						<input type="number" id="expiresInHours" value="2" min="0" style="width: 100%; background-color: rgba(255,255,255,0.1); border-radius: 6px; border: solid 1px rgba(255,255,255,0.2); padding: 0.5em;" />
+			<div id="advanced-options">
+				<a href="#" onclick="toggleAdvanced(); return false;">高级选项</a>
+				<div id="advanced-fields">
+					<div>
+						<label for="expiresInHours">过期时间 (小时)</label>
+						<input type="number" id="expiresInHours" value="2" min="0" />
 					</div>
 					<div>
-						<label for="maxVisits" style="display: block; margin-bottom: .5em;">最大访问次数 (0 或留空表示不限制)</label>
-						<input type="number" id="maxVisits" placeholder="不限制" min="0" style="width: 100%; background-color: rgba(255,255,255,0.1); border-radius: 6px; border: solid 1px rgba(255,255,255,0.2); padding: 0.5em;" />
+						<label for="maxVisits">最大访问次数 (0 或留空表示不限制)</label>
+						<input type="number" id="maxVisits" placeholder="不限制" min="0" />
 					</div>
 				</div>
 			</div>

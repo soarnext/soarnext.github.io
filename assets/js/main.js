@@ -36,6 +36,13 @@
 		document.body.style.backgroundSize = 'cover';
 		document.body.style.backgroundPosition = 'center center';
 		document.body.style.backgroundAttachment = 'fixed';
+
+		// 直接设置版权颜色为白色并添加阴影，以确保在任何背景下都可见
+		const footerElement = document.getElementById('footer');
+		if (footerElement) {
+			footerElement.style.color = 'rgba(255, 255, 255, 0.85)'; // 白色
+			footerElement.style.textShadow = '0 0 5px rgba(0,0,0,0.5)'; // 黑色阴影
+		}
 	}
 
 	// 页面加载时调用
@@ -44,17 +51,7 @@
 	// 高级选项切换函数
 	window.toggleAdvanced = function() {
 		const fields = document.getElementById('advanced-fields');
-		if (fields.style.visibility === 'hidden' || fields.style.visibility === '') {
-			fields.style.visibility = 'visible';
-			fields.style.opacity = '1';
-			fields.style.maxHeight = '200px'; // Set a max-height large enough to show content
-			fields.style.padding = '1em'; // Restore padding
-		} else {
-			fields.style.visibility = 'hidden';
-			fields.style.opacity = '0';
-			fields.style.maxHeight = '0'; // Collapse height when hidden
-			fields.style.padding = '0'; // Remove padding
-		}
+		fields.classList.toggle('visible');
 	};
 
 })();
