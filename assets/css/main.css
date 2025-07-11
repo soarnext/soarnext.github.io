@@ -99,7 +99,7 @@ body {
   -webkit-justify-content: center;
   -ms-justify-content: center;
   justify-content: center;
-  background-color: #000;
+  background-color: #121212;
   padding: 6em 4em 4em 4em; }
   body.is-preload *, body.is-preload *:before, body.is-preload *:after {
     -moz-animation: none !important;
@@ -131,7 +131,7 @@ body {
   transition: opacity 2s ease-in-out;
   height: 100%;
   left: 0;
-  opacity: 0.375;
+  opacity: 0.2;
   position: fixed;
   top: 0;
   width: 100%;
@@ -229,7 +229,7 @@ body {
 
 /* Type */
 body, input, select, textarea {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.85);
   font-family: "Roboto", sans-serif;
   font-size: 16pt;
   font-weight: 400;
@@ -580,10 +580,10 @@ textarea {
   -webkit-transition: border-color 0.2s ease, background-color 0.2s ease;
   -ms-transition: border-color 0.2s ease, background-color 0.2s ease;
   transition: border-color 0.2s ease, background-color 0.2s ease;
-  background-color: transparent;
-  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
   border: none;
-  border: solid 2px rgba(255, 255, 255, 0.35);
+  border: solid 2px rgba(255, 255, 255, 0.2);
   color: inherit;
   display: block;
   outline: 0;
@@ -737,8 +737,8 @@ button,
   -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out;
   -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  background-color: #1cb495;
-  border-radius: 6px;
+  background-color: #1DB954;
+  border-radius: 8px;
   border: 0;
   color: #ffffff !important;
   cursor: pointer;
