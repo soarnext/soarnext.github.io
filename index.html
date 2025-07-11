@@ -15,16 +15,25 @@
 				const shortId = params.get('id');
 
 				if (shortId) {
-					// An ID is present, so we are in "redirect mode".
 					document.title = '跳转中...';
 					document.body.innerHTML = `
-						<div id="tips" style="text-align: center; padding: 20px; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-							<h2>正在安全跳转...</h2>
-							<div class="loader" style="border: 4px solid #f3f3f3; border-radius: 50%; border-top: 4px solid #3498db; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto;"></div>
+						<div id="redirect-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; background-color: #121212; color: white; font-family: sans-serif;">
+							<div id="tips" style="text-align: center; padding: 20px; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+								<h2>正在安全跳转...</h2>
+								<div class="loader" style="border: 4px solid #f3f3f3; border-radius: 50%; border-top: 4px solid #3498db; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto;"></div>
+							</div>
+							<footer id="redirect-footer" style="margin-top: auto; padding: 2em 0; text-align: center; width: 100%; color: rgba(255, 255, 255, 0.5);">
+								<ul class="copyright" style="list-style: none; padding: 0; margin: 0;">
+									<li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank" style="color: inherit; text-decoration: none;">xiaosoar</a></li>
+								</ul>
+							</footer>
 						</div>
 						<style>
 							@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-							body { display: flex; justify-content: center; align-items: center; background-color: #f0f2f5; color: #333; }
+							body { margin: 0; } /* Ensure no default body margin */
+							#redirect-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+							#tips, #tips h2, #tips p { color: #333; }
+							#tips a { color: #007bff; text-decoration: none; }
 						</style>
 					`;
 					
@@ -38,9 +47,9 @@
 						if (isMobile) {
 							instructionHTML += '<p>点击右上角的菜单按钮 (通常是三个点)，<br>然后选择“在浏览器中打开”。</p>';
 						} else {
-							instructionHTML += `<a href="${window.location.href}" target="_blank" style="text-decoration: none; color: inherit;">
+							instructionHTML += `<a href="${window.location.href}" target="_blank">
 												<div style="margin-bottom: 1em; font-size: 48px;"><i class="fas fa-globe"></i></div>
-												<p>请点击图标或复制网址，<br>在浏览器中打开。</p>
+												<p>请点击图标或复制网址，<br>并在您电脑的浏览器中打开。</p>
 											 </a>`;
 						}
 						document.getElementById('tips').innerHTML = instructionHTML;
@@ -78,7 +87,7 @@
 		</script>
 
 		<!-- Main Content - This will only be visible if not redirecting -->
-		<div id="main-container">
+		<div id="main-container" style="display: none;">
 			<!-- Header -->
 			<header id="header">
 				<h1>链接生成器</h1>
