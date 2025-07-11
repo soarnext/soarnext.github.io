@@ -41,4 +41,20 @@
 	// 页面加载时调用
 	window.onload = setBackgroundImage;
 
+	// 高级选项切换函数
+	window.toggleAdvanced = function() {
+		const fields = document.getElementById('advanced-fields');
+		if (fields.style.visibility === 'hidden' || fields.style.visibility === '') {
+			fields.style.visibility = 'visible';
+			fields.style.opacity = '1';
+			fields.style.maxHeight = '200px'; // Set a max-height large enough to show content
+			fields.style.padding = '1em'; // Restore padding
+		} else {
+			fields.style.visibility = 'hidden';
+			fields.style.opacity = '0';
+			fields.style.maxHeight = '0'; // Collapse height when hidden
+			fields.style.padding = '0'; // Remove padding
+		}
+	};
+
 })();

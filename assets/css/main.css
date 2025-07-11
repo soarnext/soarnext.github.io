@@ -44,64 +44,13 @@ table {
   border-spacing: 0; }
 
 body {
-  -webkit-text-size-adjust: none; }
-
-mark {
-  background-color: transparent;
-  color: inherit; }
-
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0; }
-
-input, select, textarea {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  -ms-appearance: none;
-  appearance: none; }
-
-/* Basic */
-@-ms-viewport {
-  width: device-width; }
-
-body {
-  -ms-overflow-style: scrollbar; }
-
-@media screen and (max-width: 480px) {
-  html, body {
-    min-width: 320px; } }
-
-html {
-  box-sizing: border-box; }
-
-*, *:before, *:after {
-  box-sizing: inherit; }
-
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-  width: 100%; }
-  @media screen and (max-height: 640px) {
-    html, body {
-      height: auto;
-      min-height: 100%; } }
-
-body {
-  display: -moz-flex;
-  display: -webkit-flex;
-  display: -ms-flex;
-  display: flex;
-  -moz-flex-direction: column;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -moz-justify-content: center;
-  -webkit-justify-content: center;
-  -ms-justify-content: center;
-  justify-content: center;
   background-color: #121212;
-  padding: 6em 4em 4em 4em;
-  min-height: 100vh; }
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em; /* Adjust padding for overall body */
+}
   body.is-preload *, body.is-preload *:before, body.is-preload *:after {
     -moz-animation: none !important;
     -webkit-animation: none !important;
@@ -116,13 +65,13 @@ body {
     z-index: 2; }
   @media screen and (max-width: 1680px) {
     body {
-      padding: 6em 3.5em 3.5em 3.5em; } }
+      padding: 2em; } }
   @media screen and (max-width: 736px) {
     body {
-      padding: 5em 2em 2em 2em; } }
+      padding: 1em; } }
   @media screen and (max-width: 360px) {
     body {
-      padding: 5em 1.25em 1.25em 1.25em; } }
+      padding: 0.5em; } }
 
 /* BG */
 #bg {
@@ -433,7 +382,7 @@ ul {
 ul.icons {
   cursor: default;
   list-style: none;
-  padding-left: 0; }
+  padding: 0; }
   ul.icons li {
     display: inline-block;
     padding: 0 1em 0 0; }
@@ -962,6 +911,89 @@ body.redirect-mode {
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   color: #333; /* Ensure tips text is dark */
+}
+
+#tips h2, #tips p {
+  color: #333; /* Ensure headings and paragraphs are dark */
+}
+
+#tips a {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#redirect-footer {
+  margin-top: auto;
+  padding: 2em 0;
+  text-align: center;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.5); /* Footer text color */
+}
+
+#redirect-footer .copyright {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#redirect-footer .copyright a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#main-container {
+  flex-grow: 0; /* Allow content to shrink */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto; /* Allow width to adjust */
+  max-width: 90%; /* Limit max width */
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  border-radius: 15px; /* Rounded corners */
+  padding: 3em 2em; /* Adjust padding */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+  margin: auto; /* Center the container */
+}
+
+#header {
+  padding: 0; /* Remove padding from header */
+  margin-bottom: 2em; /* Add margin below header */
+}
+
+#header h1, #header p {
+  color: #fff; /* Ensure text is visible */
+}
+
+#signup-form {
+  margin-bottom: 2em; /* Add margin below form */
+}
+
+#advanced-options {
+  margin-top: 0; /* Remove top margin */
+  margin-bottom: 1em; /* Adjust margin below advanced options */
+}
+
+#footer {
+  opacity: 1; /* Ensure footer is fully visible */
+  padding: 0; /* Remove padding from footer */
+  margin-top: 1em; /* Adjust margin top */
 }
 
 #tips h2, #tips p {
