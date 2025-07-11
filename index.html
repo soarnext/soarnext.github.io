@@ -8,14 +8,58 @@
 	</head>
 	<body class="is-preload">
 
-		<!-- Header -->
+		<!-- This script will handle the redirection if an 'id' is present -->
+		<script>
+			(function() {
+				const params = new URLSearchParams(window.location.search);
+				const shortId = params.get('id');
+
+				if (shortId) {
+					// An ID is present, so we are in "redirect mode".
+					// Hide the main content and show a loading message.
+					document.body.innerHTML = `
+						<div id="tips" style="text-align: center; padding: 20px; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+							<h2>正在安全跳转...</h2>
+							<div class="loader" style="border: 4px solid #f3f3f3; border-radius: 50%; border-top: 4px solid #3498db; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto;"></div>
+						</div>
+						<style>
+							@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+							body { display: flex; justify-content: center; align-items: center; background-color: #f0f2f5; }
+						</style>
+					`;
+					
+					const WORKER_URL = 'https://dl.api.yxc.us.kg/';
+					fetch(`${WORKER_URL}${shortId}`)
+						.then(response => {
+							if (!response.ok) throw new Error('Link not found or API error.');
+							return response.json();
+						})
+						.then(data => {
+							if (data && data.url) {
+								window.location.href = data.url;
+							} else {
+								throw new Error('Invalid data format from API.');
+							}
+						})
+						.catch(error => {
+							console.error('Redirect error:', error);
+							document.getElementById('tips').innerHTML = '<h2>链接已失效</h2><p>抱歉，无法找到您要访问的页面。</p>';
+						});
+				}
+				// If no 'id', the script does nothing and the rest of the page loads normally.
+			})();
+		</script>
+
+		<!-- Main Content - This will only be visible if not redirecting -->
+		<div id="main-container">
+			<!-- Header -->
 			<header id="header">
 				<h1>链接生成器</h1>
 				<p>输入您的链接，生成一个防屏蔽的短链接，可在微信、QQ等平台安全分享。</p>
 			</header>
 
-		<!-- Signup Form -->
-			<form id="signup-form" method="post">
+			<!-- Signup Form -->
+			<form id="signup-form" method="post" onsubmit="build_url(); return false;">
 				<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
 				<input type="button" value="生成短链接" onclick="build_url()"/>
 			</form>
@@ -23,7 +67,18 @@
 
 			<script src="./assets/js/build_url.js"></script>
 
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/soarnext/soarnext.github.io" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Powered by <a href="https://github.com/soarnext" target="_blank">SoarNext</a></li>
+				</ul>
+			</footer>
+		</div>
+
 		<!-- Scripts -->
-			<script src="assets/js/main.js"></script>
+		<script src="assets/js/main.js"></script>
 	</body>
 </html>

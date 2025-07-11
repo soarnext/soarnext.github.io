@@ -29,7 +29,7 @@ async function build_url() {
         }
 
         const data = await response.json();
-        const shortUrl = new URL(`api?id=${data.id}`, GITHUB_PAGES_URL).href;
+        const shortUrl = new URL(`?id=${data.id}`, GITHUB_PAGES_URL).href;
 
         resultElement.innerHTML = `
             生成成功！短链接： <a href="${shortUrl}" target="_blank">${shortUrl}</a>
