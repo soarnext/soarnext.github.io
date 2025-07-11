@@ -24,11 +24,11 @@
             if (isWeixin ) {
                 let instructionHTML = '<h2>请在外部浏览器中打开</h2>';
                 if (isMobile) {
-                    instructionHTML += '<p>点击右上角的菜单按钮(通常是三个点)<br>并选择“用浏览器打开”<i class="fas fa-globe"></i></p>';
+                    instructionHTML += '<p>1.点击右上角的菜单按钮(通常是三个点)<br>2.选择<i class="fas fa-globe"></i>“用浏览器打开”</p>';
                 } else {
                     instructionHTML += `<a href="${window.location.href}" target="_blank">
                                         <div style="margin-bottom: 1em; font-size: 48px;"><i class="fas fa-globe"></i></div>
-                                        <p>请点击图标或复制网址，<br>并在您电脑的浏览器中打开。</p>
+                                        <p>1.点击图标或复制网址，<br>2.在您电脑的浏览器中打开。</p>
                                      </a>`;
                 }
                 document.getElementById('tips').innerHTML = instructionHTML;
@@ -36,7 +36,7 @@
             if(isQQ){
                     let instructionHTML = '<h2>请在外部浏览器中打开</h2>';
                 if (isMobile) {
-                    instructionHTML += '<p>点击右上角的菜单按钮(通常是三个点)<br>并选择“浏览器"<i class="fas fa-globe"></i><br>如果没有菜单按钮请复制链接至浏览器打开</p>';
+                    instructionHTML += '<p>1.点击右上角的菜单按钮(通常是三个点)<br>2. 选择<i class="fas fa-globe">“浏览器"</i><br>如果没有菜单按钮请复制链接至浏览器打开</p>';
                 } else {
                     instructionHTML += `<a href="${window.location.href}" target="_blank">
                                         <div style="margin-bottom: 1em; font-size: 48px;"><i class="fas fa-globe"></i></div>
