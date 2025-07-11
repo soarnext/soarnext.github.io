@@ -5,19 +5,15 @@
     if (shortId) {
         document.title = '跳转中...';
         document.body.className = 'redirect-mode'; // Add class for external CSS
-        document.body.innerHTML = `
-            <div id="redirect-container">
+        const mainContainer = document.getElementById('main-container');
+        if (mainContainer) {
+            mainContainer.innerHTML = `
                 <div id="tips">
                     <h2>正在安全跳转...</h2>
                     <div class="loader"></div>
                 </div>
-                <footer id="redirect-footer">
-                    <ul class="copyright">
-                        <li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank">xiaosoar</a></li>
-                    </ul>
-                </footer>
-            </div>
-        `;
+            `;
+        }
         
         const ua = navigator.userAgent.toLowerCase();
         const isWeixin = ua.indexOf('micromessenger') !== -1;
