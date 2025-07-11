@@ -1,6 +1,6 @@
 // --- Configuration ---
 const WORKER_URL = 'https://dl.api.yxc.us.kg/';
-const GITHUB_PAGES_URL = 'https://y.zhoulove.cn/';
+const GITHUB_PAGES_URL = 'https://soarnext.github.io/';
 
 /**
  * Handles the short URL generation process.
