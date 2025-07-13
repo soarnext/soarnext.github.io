@@ -1,4 +1,4 @@
 // API Configuration
-export const WORKER_URL = 'https://dl.shandian.eu.org/';
-export const GITHUB_PAGES_URL = 'https://soarnext.github.io/duanli-bata/';
+export const WORKER_URL = 'https://dl.api.yxc.us.kg/';
+export const GITHUB_PAGES_URL = 'https://dl.chn-hw.eu.org/';
 export const CAP_API_ENDPOINT = 'https://cap.shandian.eu.org/5c701606c2/';
