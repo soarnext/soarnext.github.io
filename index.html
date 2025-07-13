@@ -5,82 +5,89 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<script src="https://cdn.jsdelivr.net/npm/@cap.js/widget@0.0.6" async defer></script>
+		<script src="https://cap.shandian.eu.org/assets/widget.js"></script>
 	</head>
-	<body class="is-preload">
+			<body class="is-preload">
 
-		<!-- This script will handle the redirection if an 'id' is present -->
-		<script src="./assets/js/redirect.js"></script>
+				<!-- This script will handle the redirection if an 'id' is present -->
+				<script src="./assets/js/redirect.js"></script>
 
-		<!-- Main Content - This will only be visible if not redirecting -->
-		<div id="main-container">
-			<!-- Header -->
-			<header id="header">
-				<h1>链接生成器</h1>
-				<p>输入您的链接，生成一个防屏蔽的短链接</p>
-			</header>
+				<!-- Main Content - This will only be visible if not redirecting -->
+				<div id="main-container">
+					<!-- Header -->
+					<header id="header">
+						<h1>链接生成器</h1>
+						<p>输入您的链接，生成一个防屏蔽的短链接</p>
+					</header>
 
-			<!-- Signup Form -->
-			<form id="signup-form" method="post" action="#">
-				<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
-<cap-widget id="cap" data-cap-api-endpoint="https://cap.shandian.eu.org/ad86ecae46/"></cap-widget>
-				<input type="submit" value="生成短链接" />
-			</form>
+					<!-- Signup Form -->
+					<form id="signup-form" method="post" action="#">
+						<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
+						<cap-widget
+							id="cap"
+							data-cap-api-endpoint="https://cap.shandian.eu.org/9560e59447/"
+							data-cap-i18n-verifying-label="验证中..."
+							data-cap-i18n-initial-state="我是人类"
+							data-cap-i18n-solved-label="验证成功"
+							data-cap-i18n-error-label="验证失败"
+						></cap-widget>
+						<input type="submit" value="生成短链接" />
+					</form>
 
-			<!-- Advanced Options -->
-			<div id="advanced-options">
-				<a href="#" onclick="toggleAdvanced(); return false;">高级选项</a>
-				<div id="advanced-fields">
-					<div>
-						<label for="expiresInHours">过期时间 (小时)</label>
-						<input type="number" id="expiresInHours" value="2" min="0" />
+					<!-- Advanced Options -->
+					<div id="advanced-options">
+						<a href="#" onclick="toggleAdvanced(); return false;">高级选项</a>
+						<div id="advanced-fields">
+							<div>
+								<label for="expiresInHours">过期时间 (小时)</label>
+								<input type="number" id="expiresInHours" value="2" min="0" />
+							</div>
+							<div>
+								<label for="maxVisits">最大访问次数 (0 或留空表示不限制)</label>
+								<input type="number" id="maxVisits" placeholder="不限制" min="0" />
+							</div>
+						</div>
 					</div>
-					<div>
-						<label for="maxVisits">最大访问次数 (0 或留空表示不限制)</label>
-						<input type="number" id="maxVisits" placeholder="不限制" min="0" />
-					</div>
+
+					<p id="b_url" style="margin-top: 20px;"></p>
+
+					<script src="./assets/js/build_url.js"></script>
+					<script>
+						const widget = document.querySelector("#cap");
+						const form = document.querySelector("#signup-form");
+
+						let capToken = null;
+
+						widget.addEventListener("solve", function (e) {
+							capToken = e.detail.token;
+						});
+
+						widget.addEventListener("error", function () {
+							capToken = null;
+						});
+
+						form.addEventListener("submit", function (e) {
+							e.preventDefault();
+							if (capToken) {
+								build_url(capToken); // Pass capToken to build_url
+							} else {
+								alert("请先完成人机验证。");
+							}
+						});
+					</script>
 				</div>
-			</div>
 
-			<p id="b_url" style="margin-top: 20px;"></p>
+				<!-- Footer -->
+				<footer id="footer">
+					<ul class="icons">
+						<li><a href="https://github.com/soarnext/soarnext.github.io" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank">xiaosoar</a></li>
+					</ul>
+				</footer>
 
-			<script src="./assets/js/build_url.js"></script>
-			<script>
-				const widget = document.querySelector("#cap");
-				const form = document.querySelector("#signup-form");
-
-				let capToken = null;
-
-				widget.addEventListener("solve", function (e) {
-					capToken = e.detail.token;
-				});
-
-				widget.addEventListener("error", function () {
-					capToken = null;
-				});
-
-				form.addEventListener("submit", function (e) {
-					e.preventDefault();
-					if (capToken) {
-						build_url(capToken); // Pass capToken to build_url
-					} else {
-						alert("请先完成人机验证。");
-					}
-				});
-			</script>
-		</div>
-
-		<!-- Footer -->
-		<footer id="footer">
-			<ul class="icons">
-				<li><a href="https://github.com/soarnext/soarnext.github.io" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-			</ul>
-			<ul class="copyright">
-				<li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank">xiaosoar</a></li>
-			</ul>
-		</footer>
-
-		<!-- Scripts -->
-		<script src="assets/js/main.js"></script>
-	</body>
-</html>
+				<!-- Scripts -->
+				<script src="assets/js/main.js"></script>
+			</body>
+		</html>

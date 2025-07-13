@@ -9,12 +9,15 @@
  */
 
 const CAP_SERVER_BASE_URL = 'https://cap.shandian.eu.org';
-const CAP_SITE_KEY = 'ad86ecae46';
+const CAP_SITE_KEY = '9560e59447'; // Updated based on user's latest preference
 
 export default {
     async fetch(request, env) {
         if (!env.DB) {
             return new Response('D1 database binding not found.', { status: 500 });
+        }
+        if (!env.CAP_SECRET_KEY) {
+            return new Response('CAP_SECRET_KEY environment variable not found.', { status: 500 });
         }
 
         const url = new URL(request.url);
@@ -55,7 +58,7 @@ async function handleCreateShortUrl(request, env) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ token: capToken }),
+            body: JSON.stringify({ secret: env.CAP_SECRET_KEY, response: capToken }),
         });
 
         if (!verifyResponse.ok) {
