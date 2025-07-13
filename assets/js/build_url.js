@@ -1,11 +1,12 @@
 // --- Configuration ---
-const WORKER_URL = 'https://dl.api.yxc.us.kg/';
-const GITHUB_PAGES_URL = 'https://dl.chn-hw.eu.org/';
+const WORKER_URL = 'https://dl.shandian.eu.org/';
+const GITHUB_PAGES_URL = 'https://soarnext.github.io/duanli-bata/';
 
 /**
  * Handles the short URL generation process.
+ * @param {string} capToken - The CAPTCHA token from Cap.js.
  */
-async function build_url() {
+async function build_url(capToken) {
     const urlInput = document.querySelector('#url');
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
@@ -26,7 +27,8 @@ async function build_url() {
         const payload = {
             url: longUrl,
             expiresInHours: expiresInHours,
-            maxVisits: maxVisits
+            maxVisits: maxVisits,
+            capToken: capToken // Add the CAPTCHA token to the payload
         };
 
         const response = await fetch(WORKER_URL, {

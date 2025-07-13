@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="https://cdn.jsdelivr.net/npm/@cap.js/widget" async defer></script>
 	</head>
 	<body class="is-preload">
 
@@ -20,9 +21,10 @@
 			</header>
 
 			<!-- Signup Form -->
-			<form id="signup-form" method="post" onsubmit="build_url(); return false;">
+			<form id="signup-form" method="post" action="#">
 				<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
-				<input type="button" value="生成短链接" onclick="build_url()"/>
+<cap-widget id="cap" data-cap-api-endpoint="YOUR_CLOUDFLARE_WORKER_URL/api/cap"></cap-widget>
+				<input type="submit" value="生成短链接" />
 			</form>
 
 			<!-- Advanced Options -->
@@ -43,7 +45,29 @@
 			<p id="b_url" style="margin-top: 20px;"></p>
 
 			<script src="./assets/js/build_url.js"></script>
+			<script>
+				const widget = document.querySelector("#cap");
+				const form = document.querySelector("#signup-form");
 
+				let capToken = null;
+
+				widget.addEventListener("solve", function (e) {
+					capToken = e.detail.token;
+				});
+
+				widget.addEventListener("error", function () {
+					capToken = null;
+				});
+
+				form.addEventListener("submit", function (e) {
+					e.preventDefault();
+					if (capToken) {
+						build_url(capToken); // Pass capToken to build_url
+					} else {
+						alert("请先完成人机验证。");
+					}
+				});
+			</script>
 		</div>
 
 		<!-- Footer -->
