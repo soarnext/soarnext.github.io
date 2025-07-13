@@ -22,7 +22,7 @@ export async function build_url(capToken) {
         return;
     }
 
-    resultElement.innerHTML = '正在生成短链接...';
+    resultElement.innerHTML = '正在生成链接...';
 
     try {
         const payload = {
@@ -37,6 +37,12 @@ export async function build_url(capToken) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
+
+        if (response.status === 403) {
+            window.capToken = null;
+            document.querySelector("#cap").reset();
+            throw new Error('CAPTCHA 验证失败，请重试。');
+        }
 
         const data = await response.json();
 
@@ -61,12 +67,17 @@ export async function build_url(capToken) {
  * Copies the given text to the user's clipboard.
  */
 window.copyToClipboard = function(text) {
+    const alertModal = document.getElementById('alert-modal');
+    const alertMessage = document.getElementById('alert-message');
+
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('短链接已复制到剪贴板！');
+            alertMessage.textContent = '链接已复制到剪贴板！';
+            alertModal.style.display = 'flex';
         }).catch(err => {
             console.error('Could not copy text: ', err);
-            alert('复制失败。');
+            alertMessage.textContent = '复制失败。';
+            alertModal.style.display = 'flex';
         });
     } else {
         const textArea = document.createElement('textarea');
@@ -76,10 +87,12 @@ window.copyToClipboard = function(text) {
         textArea.select();
         try {
             document.execCommand('copy');
-            alert('短链接已复制到剪贴板！');
+            alertMessage.textContent = '链接已复制到剪贴板！';
+            alertModal.style.display = 'flex';
         } catch (err) {
             console.error('Fallback: Oops, unable to copy', err);
-            alert('复制失败。');
+            alertMessage.textContent = '复制失败。';
+            alertModal.style.display = 'flex';
         }
         document.body.removeChild(textArea);
     }

@@ -5,7 +5,9 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<script src="https://cap.shandian.eu.org/assets/widget.js"></script>
+		<link rel="stylesheet" href="assets/css/modal.css" />
+		<link rel="stylesheet" href="assets/css/alert-modal.css" />
+		<link rel="stylesheet" href="assets/css/custom.css" />
 	</head>
 			<body class="is-preload">
 
@@ -23,16 +25,32 @@
 					<!-- Signup Form -->
 					<form id="signup-form" method="post" action="#">
 						<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
-						<cap-widget
-							id="cap"
-							data-cap-api-endpoint=""
-							data-cap-i18n-verifying-label="验证中..."
-							data-cap-i18n-initial-state="我是人类"
-							data-cap-i18n-solved-label="验证成功"
-							data-cap-i18n-error-label="验证失败"
-						></cap-widget>
-						<input type="submit" value="生成短链接" />
+						<div id="captcha-modal" class="modal">
+							<div class="modal-content">
+								<cap-widget
+									id="cap"
+									data-cap-api-endpoint=""
+									data-cap-i18n-verifying-label="验证中..."
+									data-cap-i18n-initial-state="我是人类"
+									data-cap-i18n-solved-label="验证成功"
+									data-cap-i18n-error-label="验证失败"
+								></cap-widget>
+							</div>
+						</div>
+						<input type="submit" value="生成链接" />
 					</form>
+					<div id="alert-modal" class="modal">
+						<div class="modal-content">
+							<div class="checkmark-container">
+								<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+									<circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+									<path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+								</svg>
+							</div>
+							<p id="alert-message" style="color: white;"></p>
+							<button id="alert-ok-btn" class="button" style="margin-top: 1em;">确认</button>
+						</div>
+					</div>
 
 					<!-- Advanced Options -->
 					<div id="advanced-options">
@@ -51,37 +69,7 @@
 
 					<p id="b_url" style="margin-top: 20px;"></p>
 
-					<script type="module">
-						import { CAP_API_ENDPOINT } from './assets/js/config.js';
-						import { build_url } from './assets/js/build_url.js';
-
-						const widget = document.querySelector("#cap");
-						const form = document.querySelector("#signup-form");
-
-						// Set the data-cap-api-endpoint dynamically
-						if (widget) {
-							widget.setAttribute("data-cap-api-endpoint", CAP_API_ENDPOINT);
-						}
-
-						let capToken = null;
-
-						widget.addEventListener("solve", function (e) {
-							capToken = e.detail.token;
-						});
-
-						widget.addEventListener("error", function () {
-							capToken = null;
-						});
-
-						form.addEventListener("submit", function (e) {
-							e.preventDefault();
-							if (capToken) {
-								build_url(capToken); // Access build_url from global scope
-							} else {
-								alert("请先完成人机验证。");
-							}
-						});
-					</script>
+					<script type="module" src="assets/js/app.js"></script>
 				</div>
 
 				<!-- Footer -->
@@ -96,5 +84,7 @@
 
 				<!-- Scripts -->
 				<script src="assets/js/main.js"></script>
+				<script src="https://cap.shandian.eu.org/assets/widget.js"></script>
+				<script src="https://cap.shandian.eu.org/assets/floating.js"></script>
 			</body>
 		</html>

@@ -1,0 +1,27 @@
+#alert-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    backdrop-filter: blur(30px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(30px);
+    justify-content: center;
+    align-items: center;
+}
+
+#alert-modal .modal-content {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
