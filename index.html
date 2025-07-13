@@ -17,6 +17,8 @@
 					targetUrl = new URL('challenge', baseUrl);
 				} else if (targetUrl.pathname.endsWith('redeem')) {
 					targetUrl = new URL('siteverify', baseUrl);
+				} else if (targetUrl.pathname.endsWith('siteverify')) { // Add this for direct siteverify calls if any
+					targetUrl = new URL('siteverify', baseUrl);
 				}
 				return fetch(targetUrl, init);
 			};

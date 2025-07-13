@@ -73,29 +73,6 @@ async function handleCreateShortUrl(request, env) {
     try {
         const { url: longUrl, expiresInHours = 2, maxVisits = null, capToken } = await request.json();
 
-        if (!capToken) {
-            return new Response(JSON.stringify({ error: 'CAPTCHA token missing.' }), { status: 403, headers: corsHeaders() });
-        }
-
-        // Verify Cap.js token
-        const verifyResponse = await fetch(`${CAP_SERVER_BASE_URL}/${CAP_SITE_KEY}/siteverify`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token: capToken }),
-        });
-
-        if (!verifyResponse.ok) {
-            console.error('Cap.js token verification failed:', verifyResponse.status, verifyResponse.statusText);
-            return new Response(JSON.stringify({ error: 'CAPTCHA verification failed.' }), { status: 403, headers: corsHeaders() });
-        }
-
-        const verifyData = await verifyResponse.json();
-        if (!verifyData.success) {
-            return new Response(JSON.stringify({ error: 'CAPTCHA verification failed.' }), { status: 403, headers: corsHeaders() });
-        }
-
         if (!longUrl || !isValidHttpUrl(longUrl)) {
             return new Response(JSON.stringify({ error: 'Invalid URL provided.' }), { status: 400, headers: corsHeaders() });
         }
