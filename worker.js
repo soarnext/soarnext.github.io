@@ -13,11 +13,13 @@ const CAP_SITE_KEY = '9560e59447'; // Updated based on user's latest preference
 
 export default {
     async fetch(request, env) {
+        console.log(`Received request: ${request.method} ${request.url}`); // Added for debugging
+
         if (!env.DB) {
-            return new Response('D1 database binding not found.', { status: 500 });
+            return new Response('D1 database binding not found.', { status: 500, headers: corsHeaders() }); // Added corsHeaders
         }
         if (!env.CAP_SECRET_KEY) {
-            return new Response('CAP_SECRET_KEY environment variable not found.', { status: 500 });
+            return new Response('CAP_SECRET_KEY environment variable not found.', { status: 500, headers: corsHeaders() }); // Added corsHeaders
         }
 
         const url = new URL(request.url);
@@ -30,11 +32,21 @@ export default {
             return handleCreateShortUrl(request, env);
         }
         if (request.method === 'GET' && path.length > 1) {
-            const id = path.substring(1);
+            let id = path.substring(1);
+            // If the path is just '/', check for 'id' in query parameters
+            if (id === '' && url.searchParams.has('id')) {
+                id = url.searchParams.get('id');
+            } else if (id.startsWith('?id=')) { // Handle cases like /?id=xxx directly in path
+                id = url.searchParams.get('id');
+            }
+
+            if (!id) { // If no ID is found after parsing
+                return new Response(JSON.stringify({ error: 'Short URL ID missing.' }), { status: 400, headers: corsHeaders() });
+            }
             return handleGetShortUrl(id, request, env); // Pass request for caching
         }
 
-        return new Response('Not Found', { status: 404 });
+        return new Response('Not Found', { status: 404, headers: corsHeaders() }); // Added corsHeaders
     },
 
     // Handle scheduled events for cleanup

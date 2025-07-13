@@ -45,7 +45,7 @@
                     document.getElementById('tips').innerHTML = instructionHTML;
                 }
             } else {
-                const WORKER_URL = 'https://dl.api.yxc.us.kg/';
+                const WORKER_URL = 'https://dl.shandian.eu.org/';
                 fetch(`${WORKER_URL}${shortId}`)
                     .then(response => {
                         if (!response.ok) {
