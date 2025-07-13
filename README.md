@@ -1,5 +1,5 @@
 # Lianjie
-
+### 本项目fork自CalmXin的[xin-tencent-fang-hong](https://github.com/CalmXin/xin-tencent-fang-hong)
 ## 项目简介
 这是一个基于GitHub Pages和Cloudflare Worker/D1数据库构建的短链接生成器，旨在帮助用户生成防屏蔽的短链接，方便在微信、QQ等平台分享。
 
