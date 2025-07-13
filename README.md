@@ -1,4 +1,6 @@
 # Lianjie
+**注意：这是一个Beta版本，可能存在一些未知问题。**
+
 ### 本项目fork自CalmXin的[xin-tencent-fang-hong](https://github.com/CalmXin/xin-tencent-fang-hong)
 ## 项目简介
 这是一个基于GitHub Pages、github.io、Cloudflare Workers和Cloudflare D1数据库构建的防红短链接生成器
@@ -16,6 +18,7 @@
 - **性能优化**：后端Worker利用Cloudflare Cache API减少数据库访问次数，提高响应速度。
 - **自动清理**：通过Cloudflare Worker的Cron Trigger定时任务，自动删除过期或达到最大访问次数的链接，保持数据库整洁。
 - **动态背景**：背景图片通过 API (https://bing.img.run) 动态加载。如果 API 加载失败，将根据设备类型（移动/桌面）使用本地的备用图片。
+- **H5适配**：对移动端设备进行了适配，确保在小屏幕上也能有良好的用户体验。
 ## 已知BUG
 - 无法记录域名地址(如添加此[链接](https://blog.yxc.us.kg/posts/hallo)会转跳[根域名](https://blog.yxc.us.kg/))
 ## 部署教程
