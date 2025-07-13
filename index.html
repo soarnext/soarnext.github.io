@@ -26,6 +26,18 @@
 					<!-- Signup Form -->
 					<form id="signup-form" method="post" action="#">
 						<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
+						<div id="captcha-modal" class="modal">
+							<div class="modal-content">
+								<cap-widget
+									id="cap"
+									data-cap-api-endpoint=""
+									data-cap-i18n-verifying-label="验证中..."
+									data-cap-i18n-initial-state="我是人类"
+									data-cap-i18n-solved-label="验证成功"
+									data-cap-i18n-error-label="验证失败"
+								></cap-widget>
+							</div>
+						</div>
 						<input type="submit" value="生成链接" />
 					</form>
 					<div id="alert-modal" class="modal">
@@ -73,5 +85,7 @@
 
 				<!-- Scripts -->
 				<script src="assets/js/main.js"></script>
+				<script src="https://cap.shandian.eu.org/assets/widget.js"></script>
+				<script src="https://cap.shandian.eu.org/assets/floating.js"></script>
 			</body>
 		</html>

@@ -8,10 +8,18 @@
  * - Scheduled event: Cleans up expired/maxed-out links.
  */
 
+const CAP_SERVER_BASE_URL = 'https://cap.shandian.eu.org';
+const CAP_SITE_KEY = '9560e59447'; // Updated based on user's latest preference
+
 export default {
     async fetch(request, env) {
+        console.log(`Received request: ${request.method} ${request.url}`); // Added for debugging
+
         if (!env.DB) {
-            return new Response('D1 database binding not found.', { status: 500, headers: corsHeaders() });
+            return new Response('D1 database binding not found.', { status: 500, headers: corsHeaders() }); // Added corsHeaders
+        }
+        if (!env.CAP_SECRET_KEY) {
+            return new Response('CAP_SECRET_KEY environment variable not found.', { status: 500, headers: corsHeaders() }); // Added corsHeaders
         }
 
         const url = new URL(request.url);
@@ -38,7 +46,7 @@ export default {
             return handleGetShortUrl(id, request, env); // Pass request for caching
         }
 
-        return new Response('Not Found', { status: 404, headers: corsHeaders() });
+        return new Response('Not Found', { status: 404, headers: corsHeaders() }); // Added corsHeaders
     },
 
     // Handle scheduled events for cleanup
@@ -47,9 +55,33 @@ export default {
     },
 };
 
+
 async function handleCreateShortUrl(request, env) {
     try {
-        const { url: longUrl, expiresInHours = 2, maxVisits = null } = await request.json();
+        const { url: longUrl, expiresInHours = 2, maxVisits = null, capToken } = await request.json();
+
+        if (!capToken) {
+            return new Response(JSON.stringify({ error: 'CAPTCHA token missing.' }), { status: 403, headers: corsHeaders() });
+        }
+
+        // Verify Cap.js token
+        const verifyResponse = await fetch(`${CAP_SERVER_BASE_URL}/${CAP_SITE_KEY}/siteverify`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ secret: env.CAP_SECRET_KEY, response: capToken }),
+        });
+
+        if (!verifyResponse.ok) {
+            console.error('Cap.js token verification failed:', verifyResponse.status, verifyResponse.statusText);
+            return new Response(JSON.stringify({ error: 'CAPTCHA verification failed.' }), { status: 403, headers: corsHeaders() });
+        }
+
+        const verifyData = await verifyResponse.json();
+        if (!verifyData.success) {
+            return new Response(JSON.stringify({ error: 'CAPTCHA verification failed.' }), { status: 403, headers: corsHeaders() });
+        }
 
         if (!longUrl || !isValidHttpUrl(longUrl)) {
             return new Response(JSON.stringify({ error: 'Invalid URL provided.' }), { status: 400, headers: corsHeaders() });

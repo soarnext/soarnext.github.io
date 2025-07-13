@@ -5,8 +5,9 @@ import { GITHUB_PAGES_URL } from './config.js';
 
 /**
  * Handles the short URL generation process.
+ * @param {string} capToken - The CAPTCHA token from Cap.js.
  */
-export async function build_url() {
+export async function build_url(capToken) {
     const urlInput = document.querySelector('#url');
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
@@ -27,7 +28,8 @@ export async function build_url() {
         const payload = {
             url: longUrl,
             expiresInHours: expiresInHours,
-            maxVisits: maxVisits
+            maxVisits: maxVisits,
+            capToken: capToken // Add the CAPTCHA token to the payload
         };
 
         const response = await fetch(WORKER_URL, {
@@ -36,6 +38,11 @@ export async function build_url() {
             body: JSON.stringify(payload)
         });
 
+        if (response.status === 403) {
+            window.capToken = null;
+            document.querySelector("#cap").reset();
+            throw new Error('CAPTCHA 验证失败，请重试。');
+        }
 
         const data = await response.json();
 

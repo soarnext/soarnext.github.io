@@ -1,4 +1,6 @@
 # Lianjie
+**注意：这是一个Beta版本，可能存在一些未知问题。**
+
 ### 本项目fork自CalmXin的[xin-tencent-fang-hong](https://github.com/CalmXin/xin-tencent-fang-hong)
 ## 项目简介
 这是一个基于GitHub Pages、github.io、Cloudflare Workers和Cloudflare D1数据库构建的防红短链接生成器
@@ -87,12 +89,12 @@
 
 1.  **获取Worker URL**：
     复制您部署的Cloudflare Worker的域名
-2.  **修改 `assets/js/config.js`**：
-    打开您GitHub Pages仓库中的 `assets/js/config.js` 文件。
+2.  **修改 `assets/js/build_url.js`**：
+    打开您GitHub Pages仓库中的 `assets/js/build_url.js` 文件。
     找到以下两行：
     ```javascript
-    export const WORKER_URL = 'https://api.yourname.com/';
-    export const GITHUB_PAGES_URL = 'https://yourname.com/';
+    const WORKER_URL = 'https://api.yourname.com/';
+    const GITHUB_PAGES_URL = 'https://soarnext.github.io/';
     ```
     -   将 `WORKER_URL` 的值替换为您自己的Cloudflare Worker URL。
     -   将 `GITHUB_PAGES_URL` 的值替换为您自己的GitHub Pages网站的根URL（例如：`https://<您的用户名>.github.io/<您的仓库名>/`）。

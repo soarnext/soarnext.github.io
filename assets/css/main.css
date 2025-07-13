@@ -967,12 +967,14 @@ body.redirect-mode {
   align-items: center;
   width: auto; /* Allow width to adjust */
   max-width: 90%; /* Limit max width */
-  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 15px; /* Rounded corners */
   padding: 3em 2em; /* Adjust padding */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
   margin: auto; /* Center the container */
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #header {
