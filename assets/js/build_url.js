@@ -7,7 +7,7 @@ import { GITHUB_PAGES_URL } from './config.js';
  * Handles the short URL generation process.
  * @param {string} capToken - The CAPTCHA token from Cap.js.
  */
-async function build_url(capToken) {
+export async function build_url(capToken) {
     const urlInput = document.querySelector('#url');
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
