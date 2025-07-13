@@ -1,5 +1,5 @@
 # Lianjie
-[!IMPORTANT]本项目目前只支持此类格式(https://dl.chn-hw.eu.org/)，此BUG正在修复!
+[!IMPORTANT] 本项目目前只支持此类格式(https://dl.chn-hw.eu.org/)，此BUG正在修复!
 ## 项目简介
 这是一个基于GitHub Pages和Cloudflare Worker/D1数据库构建的短链接生成器，旨在帮助用户生成防屏蔽的短链接，方便在微信、QQ等平台分享。
 
