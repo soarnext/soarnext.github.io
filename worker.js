@@ -26,9 +26,6 @@ export default {
         if (request.method === 'POST' && path === '/') {
             return handleCreateShortUrl(request, env);
         }
-        if (request.method === 'POST' && path === '/api/cap/challenge') {
-            return handleCapChallenge(request, env);
-        }
         if (request.method === 'GET' && path.length > 1) {
             const id = path.substring(1);
             return handleGetShortUrl(id, request, env); // Pass request for caching
@@ -43,35 +40,33 @@ export default {
     },
 };
 
-async function handleCapChallenge(request, env) {
-    try {
-        const response = await fetch(`${CAP_SERVER_BASE_URL}/${CAP_SITE_KEY}/challenge`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            // Cap.js widget expects an empty body for challenge creation
-            body: JSON.stringify({})
-        });
-
-        if (!response.ok) {
-            console.error('Failed to get Cap.js challenge:', response.status, response.statusText);
-            return new Response(JSON.stringify({ error: 'Failed to get CAPTCHA challenge.' }), { status: response.status, headers: corsHeaders() });
-        }
-
-        const data = await response.json();
-        return new Response(JSON.stringify(data), {
-            headers: corsHeaders({ 'Content-Type': 'application/json' }),
-        });
-    } catch (error) {
-        console.error('Error handling Cap.js challenge:', error);
-        return new Response(JSON.stringify({ error: 'Internal server error during CAPTCHA challenge.' }), { status: 500, headers: corsHeaders() });
-    }
-}
 
 async function handleCreateShortUrl(request, env) {
     try {
         const { url: longUrl, expiresInHours = 2, maxVisits = null, capToken } = await request.json();
+
+        if (!capToken) {
+            return new Response(JSON.stringify({ error: 'CAPTCHA token missing.' }), { status: 403, headers: corsHeaders() });
+        }
+
+        // Verify Cap.js token
+        const verifyResponse = await fetch(`${CAP_SERVER_BASE_URL}/${CAP_SITE_KEY}/siteverify`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: capToken }),
+        });
+
+        if (!verifyResponse.ok) {
+            console.error('Cap.js token verification failed:', verifyResponse.status, verifyResponse.statusText);
+            return new Response(JSON.stringify({ error: 'CAPTCHA verification failed.' }), { status: 403, headers: corsHeaders() });
+        }
+
+        const verifyData = await verifyResponse.json();
+        if (!verifyData.success) {
+            return new Response(JSON.stringify({ error: 'CAPTCHA verification failed.' }), { status: 403, headers: corsHeaders() });
+        }
 
         if (!longUrl || !isValidHttpUrl(longUrl)) {
             return new Response(JSON.stringify({ error: 'Invalid URL provided.' }), { status: 400, headers: corsHeaders() });

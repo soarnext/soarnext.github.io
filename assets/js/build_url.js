@@ -24,33 +24,11 @@ async function build_url(capToken) {
     resultElement.innerHTML = '正在生成短链接...';
 
     try {
-        const CAP_SERVER_BASE_URL = 'https://cap.shandian.eu.org';
-        const CAP_SITE_KEY = 'ad86ecae46';
-
-        // Verify Cap.js token
-        const verifyResponse = await fetch(`${CAP_SERVER_BASE_URL}/${CAP_SITE_KEY}/siteverify`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token: capToken }),
-        });
-
-        if (!verifyResponse.ok) {
-            const errorData = await verifyResponse.json();
-            throw new Error(errorData.error || 'CAPTCHA verification failed.');
-        }
-
-        const verifyData = await verifyResponse.json();
-        if (!verifyData.success) {
-            throw new Error('CAPTCHA verification failed.');
-        }
-
         const payload = {
             url: longUrl,
             expiresInHours: expiresInHours,
-            maxVisits: maxVisits
-            // capToken is verified on frontend, no need to send to worker
+            maxVisits: maxVisits,
+            capToken: capToken // Add the CAPTCHA token to the payload
         };
 
         const response = await fetch(WORKER_URL, {

@@ -5,35 +5,6 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<script>
-			// Intercept Cap.js fetch requests to ensure correct API endpoint
-			window.CAP_CUSTOM_FETCH = (input, init) => {
-				const apiBase = 'https://cap.shandian.eu.org'; // Base URL for the CAPTCHA server
-				const siteKey = 'ad86ecae46'; // Your CAP_SITE_KEY
-
-				let finalUrl = '';
-
-				// Check if the input is a full URL or a relative path
-				try {
-					const urlObj = new URL(input);
-					// If it's a full URL, use it directly
-					finalUrl = urlObj.href;
-				} catch (e) {
-					// If it's a relative path, construct the full URL
-					if (input.endsWith('challenge')) {
-						finalUrl = `${apiBase}/${siteKey}/challenge`;
-					} else if (input.endsWith('redeem')) {
-						finalUrl = `${apiBase}/${siteKey}/redeem`;
-					} else if (input.endsWith('siteverify')) {
-						finalUrl = `${apiBase}/${siteKey}/siteverify`;
-					} else {
-						// Fallback for unexpected paths, might need adjustment based on actual widget behavior
-						finalUrl = `${apiBase}/${siteKey}/${input}`;
-					}
-				}
-				return fetch(finalUrl, init);
-			};
-		</script>
 		<script src="https://cdn.jsdelivr.net/npm/@cap.js/widget@0.0.6" async defer></script>
 	</head>
 	<body class="is-preload">
@@ -52,7 +23,7 @@
 			<!-- Signup Form -->
 			<form id="signup-form" method="post" action="#">
 				<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
-<cap-widget id="cap" data-cap-api-endpoint="https://dl.shandian.eu.org/api/cap/"></cap-widget>
+<cap-widget id="cap" data-cap-api-endpoint="https://cap.shandian.eu.org/ad86ecae46/"></cap-widget>
 				<input type="submit" value="生成短链接" />
 			</form>
 
