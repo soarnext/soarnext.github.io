@@ -1,5 +1,5 @@
 # Lianjie
-[!IMPORTANT] 本项目目前只支持此类格式(https://dl.chn-hw.eu.org/)，此BUG正在修复!
+
 ## 项目简介
 这是一个基于GitHub Pages和Cloudflare Worker/D1数据库构建的短链接生成器，旨在帮助用户生成防屏蔽的短链接，方便在微信、QQ等平台分享。
 
@@ -15,7 +15,8 @@
 - **性能优化**：后端Worker利用Cloudflare Cache API减少数据库访问次数，提高响应速度。
 - **自动清理**：通过Cloudflare Worker的Cron Trigger定时任务，自动删除过期或达到最大访问次数的链接，保持数据库整洁。
 - **动态背景**：背景图片通过 API (https://bing.img.run) 动态加载。如果 API 加载失败，将根据设备类型（移动/桌面）使用本地的备用图片。
-
+## 已知BUG
+- 无法记录域名地址(如https://blog.yxc.us.kg/posts/hallo)
 ## 部署教程
 
 本项目的部署分为两大部分：**前端（GitHub Pages）** 和 **后端（Cloudflare Worker & D1）**。
