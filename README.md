@@ -33,7 +33,7 @@
     将此仓库的内容上传到您的GitHub账户下的一个新仓库。
 3.  **启用GitHub Pages**：
     在您的GitHub仓库设置中，找到 `Pages` 选项，选择 `main` 分支作为部署来源，并选择 `/ (root)` 目录。保存后，GitHub Pages会自动部署您的网站。
-    您的前端网站URL将是 `https://<您的用户名>.github.io/<您的仓库名>/` (例如：`https://soarnext.github.io/soarnext.github.io/`)。
+    您的前端网站URL将是 `https://<您的用户名>.github.io/<您的仓库名>/` (如果仓库名称为<您的用户名>.github.io，可使用<您的用户名>.github.io访问) 
 
 ### 2. 后端部署 (Cloudflare Worker & D1)
 
@@ -42,9 +42,9 @@
 1.  **登录Cloudflare**：
     登录您的Cloudflare账户。
 2.  **创建D1数据库**：
-    在Cloudflare控制台中，导航到 `Workers & Pages` -> `D1`，点击 `Create database`，给您的数据库起一个名字（例如：`shortener-db`）。
+    在Cloudflare控制台中，导航到 `存储与数据库` -> `D1 SQL 数据库`，点击 `创建数据库`，给您的数据库起一个名字（例如：`lianjie-db`）。
 3.  **创建表结构**：
-    在您创建的D1数据库页面，找到 `Query` 或 `Browse Data` 选项，执行以下SQL命令来创建 `links` 表并添加索引。**请务必一条一条地执行这些命令**：
+    在您创建的D1数据库页面，点击 `控制台` ，执行以下SQL命令来创建 `links` 表并添加索引。**请务必一条一条地执行这些命令**：
 
     ```sql
     -- 创建表
@@ -70,30 +70,34 @@
 #### 2.2. Cloudflare Worker 部署
 
 1.  **创建Worker**：
-    在Cloudflare控制台中，导航到 `Workers & Pages`，点击 `Create application` -> `Create Worker`，给您的Worker起一个名字（例如：`my-shortener-worker`）。
+    在Cloudflare控制台中，导航到 `Workers & Pages`，点击 `创建` -> `从 Hello World! 开始`，给您的Worker起一个名字（例如：`my-shortener-worker`）。
 2.  **编辑Worker代码**：
-    进入您创建的Worker页面，点击 `Quick Edit` 或 `Deploy`，将本项目根目录下的 `worker.js` 文件内容复制并粘贴到Worker的代码编辑器中。
+    进入您创建的Worker页面，点击 `编辑代码` ，将本项目根目录下的 `worker.js` 文件内容复制并粘贴到Worker的代码编辑器中，点击`部署`。
 3.  **绑定D1数据库**：
-    在Worker的设置页面，找到 `Settings` -> `Variables` -> `D1 database bindings`。
-    点击 `Add binding`：
-    -   **Variable name**：输入 `DB` (必须是这个名字，因为Worker代码中使用了 `env.DB`)
-    -   **D1 database**：选择您之前创建的D1数据库（例如：`shortener-db`）。
+    在Worker的设置页面，找到 `绑定` -> `添加绑定` -> `D1 数据库`。
+    点击 `添加绑定`：
+    -   **变量名称**：输入 `DB` (必须是这个名字，因为Worker代码中使用了 `env.DB`)
+    -   **D1 数据库**：选择您之前创建的D1数据库（例如：`shortener-db`）。
     保存。
 4.  **配置Cron Trigger (定时清理)**：
-    在Worker的设置页面，找到 `Triggers` -> `Cron Triggers`。
-    点击 `Add Cron Trigger`，添加一个Cron表达式，例如 `0 * * * *` (表示每小时运行一次，用于清理过期/超限链接)。
+    在Worker的设置页面，找到 `设置` -> `触发事件`。
+    点击 `添加` ->`Cron 触发器`->`计划`，添加一个执行 Worker 的频率，选择`小时`->填写`1` (表示每小时运行一次，用于清理过期/超限链接)。
     保存并部署Worker。
-    您的Worker URL将是 `https://<您的Worker名>.<您的子域名>.workers.dev` (例如：`https://my-shortener.yourusername.workers.dev/`)。
+5. **配置自定义域名**：
+   由于workers.dev在国内无法访问，需要自定义域名
+   在Worker的设置页面，找到 `设置` -> `域和路由`。
+   点击 `添加`，添加一个直接的域名(建议托管Cloudflare,可自动配置)。
+   保存 
 
 ### 3. 更新前端配置
 
 1.  **获取Worker URL**：
-    复制您部署的Cloudflare Worker的URL（例如：`https://my-shortener.yourusername.workers.dev/`）。
+    复制您部署的Cloudflare Worker的域名
 2.  **修改 `assets/js/build_url.js`**：
     打开您GitHub Pages仓库中的 `assets/js/build_url.js` 文件。
     找到以下两行：
     ```javascript
-    const WORKER_URL = 'https://dl.api.yxc.us.kg/';
+    const WORKER_URL = 'https://api.yourname.com/';
     const GITHUB_PAGES_URL = 'https://soarnext.github.io/';
     ```
     -   将 `WORKER_URL` 的值替换为您自己的Cloudflare Worker URL。
