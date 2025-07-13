@@ -8,10 +8,17 @@
 		<script>
 			// Intercept Cap.js fetch requests to ensure correct API endpoint
 			window.CAP_CUSTOM_FETCH = (input, init) => {
-				const workerUrl = 'https://dl.shandian.eu.org/api/cap/challenge';
-				// If the input is a relative URL, prepend the workerUrl
-				const url = new URL(input, workerUrl);
-				return fetch(url, init);
+				const baseUrl = 'https://dl.shandian.eu.org/api/cap/';
+				let targetUrl = new URL(input, baseUrl);
+
+				// Cap.js widget appends 'challenge' or 'redeem' to data-cap-api-endpoint
+				// We need to map 'challenge' to '/api/cap/challenge' and 'redeem' to '/api/cap/siteverify'
+				if (targetUrl.pathname.endsWith('challenge')) {
+					targetUrl = new URL('challenge', baseUrl);
+				} else if (targetUrl.pathname.endsWith('redeem')) {
+					targetUrl = new URL('siteverify', baseUrl);
+				}
+				return fetch(targetUrl, init);
 			};
 		</script>
 		<script src="https://cdn.jsdelivr.net/npm/@cap.js/widget@0.0.6" async defer></script>
@@ -32,7 +39,7 @@
 			<!-- Signup Form -->
 			<form id="signup-form" method="post" action="#">
 				<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
-<cap-widget id="cap" data-cap-api-endpoint="https://dl.shandian.eu.org/api/cap"></cap-widget>
+<cap-widget id="cap" data-cap-api-endpoint="https://dl.shandian.eu.org/api/cap/"></cap-widget>
 				<input type="submit" value="生成短链接" />
 			</form>
 

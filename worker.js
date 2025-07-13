@@ -29,12 +29,6 @@ export default {
         if (request.method === 'POST' && path === '/api/cap/challenge') {
             return handleCapChallenge(request, env);
         }
-        // Handle the case where cap.js widget might send /api/capchallenge (missing trailing slash)
-        if (request.method === 'POST' && path === '/api/capchallenge') {
-            // Redirect or internally forward to the correct handler
-            // For simplicity, we'll just call the same handler
-            return handleCapChallenge(request, env);
-        }
         if (request.method === 'GET' && path.length > 1) {
             const id = path.substring(1);
             return handleGetShortUrl(id, request, env); // Pass request for caching
