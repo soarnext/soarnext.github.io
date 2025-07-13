@@ -1,6 +1,7 @@
+import { WORKER_URL } from './config.js';
+
 // --- Configuration ---
-const WORKER_URL = 'https://dl.shandian.eu.org/';
-const GITHUB_PAGES_URL = 'https://soarnext.github.io/duanli-bata/';
+import { GITHUB_PAGES_URL } from './config.js';
 
 /**
  * Handles the short URL generation process.

@@ -25,7 +25,7 @@
 						<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
 						<cap-widget
 							id="cap"
-							data-cap-api-endpoint="https://cap.shandian.eu.org/9560e59447/"
+							data-cap-api-endpoint=""
 							data-cap-i18n-verifying-label="验证中..."
 							data-cap-i18n-initial-state="我是人类"
 							data-cap-i18n-solved-label="验证成功"
@@ -51,10 +51,17 @@
 
 					<p id="b_url" style="margin-top: 20px;"></p>
 
-					<script src="./assets/js/build_url.js"></script>
-					<script>
+					<script type="module" src="./assets/js/build_url.js"></script>
+					<script type="module">
+						import { CAP_API_ENDPOINT } from './assets/js/config.js';
+
 						const widget = document.querySelector("#cap");
 						const form = document.querySelector("#signup-form");
+
+						// Set the data-cap-api-endpoint dynamically
+						if (widget) {
+							widget.setAttribute("data-cap-api-endpoint", CAP_API_ENDPOINT);
+						}
 
 						let capToken = null;
 
