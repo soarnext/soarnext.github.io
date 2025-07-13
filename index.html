@@ -5,6 +5,15 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script>
+			// Intercept Cap.js fetch requests to ensure correct API endpoint
+			window.CAP_CUSTOM_FETCH = (input, init) => {
+				const workerUrl = 'https://dl.shandian.eu.org/api/cap/challenge';
+				// If the input is a relative URL, prepend the workerUrl
+				const url = new URL(input, workerUrl);
+				return fetch(url, init);
+			};
+		</script>
 		<script src="https://cdn.jsdelivr.net/npm/@cap.js/widget@0.0.6" async defer></script>
 	</head>
 	<body class="is-preload">
