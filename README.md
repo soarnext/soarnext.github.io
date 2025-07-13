@@ -16,7 +16,7 @@
 - **自动清理**：通过Cloudflare Worker的Cron Trigger定时任务，自动删除过期或达到最大访问次数的链接，保持数据库整洁。
 - **动态背景**：背景图片通过 API (https://bing.img.run) 动态加载。如果 API 加载失败，将根据设备类型（移动/桌面）使用本地的备用图片。
 ## 已知BUG
-- 无法记录域名地址(如https://blog.yxc.us.kg/posts/hallo)
+- 无法记录域名地址(如添加此[链接](https://blog.yxc.us.kg/posts/hallo)会转跳[根域名](https://blog.yxc.us.kg/))
 ## 部署教程
 
 本项目的部署分为两大部分：**前端（GitHub Pages）** 和 **后端（Cloudflare Worker & D1）**。
