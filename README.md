@@ -16,6 +16,7 @@
 - **性能优化**：后端Worker利用Cloudflare Cache API减少数据库访问次数，提高响应速度。
 - **自动清理**：通过Cloudflare Worker的Cron Trigger定时任务，自动删除过期或达到最大访问次数的链接，保持数据库整洁。
 - **动态背景**：背景图片通过 API (https://bing.img.run) 动态加载。如果 API 加载失败，将根据设备类型（移动/桌面）使用本地的备用图片。
+- **H5适配**：对移动端设备进行了适配，确保在小屏幕上也能有良好的用户体验。
 ## 已知BUG
 - 无法记录域名地址(如添加此[链接](https://blog.yxc.us.kg/posts/hallo)会转跳[根域名](https://blog.yxc.us.kg/))
 ## 部署教程
@@ -86,12 +87,12 @@
 
 1.  **获取Worker URL**：
     复制您部署的Cloudflare Worker的域名
-2.  **修改 `assets/js/build_url.js`**：
-    打开您GitHub Pages仓库中的 `assets/js/build_url.js` 文件。
+2.  **修改 `assets/js/config.js`**：
+    打开您GitHub Pages仓库中的 `assets/js/config.js` 文件。
     找到以下两行：
     ```javascript
-    const WORKER_URL = 'https://api.yourname.com/';
-    const GITHUB_PAGES_URL = 'https://soarnext.github.io/';
+    export const WORKER_URL = 'https://api.yourname.com/';
+    export const GITHUB_PAGES_URL = 'https://yourname.com/';
     ```
     -   将 `WORKER_URL` 的值替换为您自己的Cloudflare Worker URL。
     -   将 `GITHUB_PAGES_URL` 的值替换为您自己的GitHub Pages网站的根URL（例如：`https://<您的用户名>.github.io/<您的仓库名>/`）。

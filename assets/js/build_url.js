@@ -1,11 +1,12 @@
+import { WORKER_URL } from './config.js';
+
 // --- Configuration ---
-const WORKER_URL = 'https://dl.api.yxc.us.kg/';
-const GITHUB_PAGES_URL = 'https://dl.chn-hw.eu.org/';
+import { GITHUB_PAGES_URL } from './config.js';
 
 /**
  * Handles the short URL generation process.
  */
-async function build_url() {
+export async function build_url() {
     const urlInput = document.querySelector('#url');
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
@@ -20,7 +21,7 @@ async function build_url() {
         return;
     }
 
-    resultElement.innerHTML = '正在生成短链接...';
+    resultElement.innerHTML = '正在生成链接...';
 
     try {
         const payload = {
@@ -34,6 +35,7 @@ async function build_url() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
+
 
         const data = await response.json();
 
@@ -57,13 +59,18 @@ async function build_url() {
 /**
  * Copies the given text to the user's clipboard.
  */
-function copyToClipboard(text) {
+window.copyToClipboard = function(text) {
+    const alertModal = document.getElementById('alert-modal');
+    const alertMessage = document.getElementById('alert-message');
+
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('短链接已复制到剪贴板！');
+            alertMessage.textContent = '链接已复制到剪贴板！';
+            alertModal.style.display = 'flex';
         }).catch(err => {
             console.error('Could not copy text: ', err);
-            alert('复制失败。');
+            alertMessage.textContent = '复制失败。';
+            alertModal.style.display = 'flex';
         });
     } else {
         const textArea = document.createElement('textarea');
@@ -73,10 +80,12 @@ function copyToClipboard(text) {
         textArea.select();
         try {
             document.execCommand('copy');
-            alert('短链接已复制到剪贴板！');
+            alertMessage.textContent = '链接已复制到剪贴板！';
+            alertModal.style.display = 'flex';
         } catch (err) {
             console.error('Fallback: Oops, unable to copy', err);
-            alert('复制失败。');
+            alertMessage.textContent = '复制失败。';
+            alertModal.style.display = 'flex';
         }
         document.body.removeChild(textArea);
     }

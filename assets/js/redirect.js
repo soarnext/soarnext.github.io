@@ -1,3 +1,5 @@
+import { WORKER_URL } from './config.js';
+
 (function() {
     document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
@@ -45,7 +47,6 @@
                     document.getElementById('tips').innerHTML = instructionHTML;
                 }
             } else {
-                const WORKER_URL = 'https://dl.api.yxc.us.kg/';
                 fetch(`${WORKER_URL}${shortId}`)
                     .then(response => {
                         if (!response.ok) {
