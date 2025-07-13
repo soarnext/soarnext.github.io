@@ -51,7 +51,6 @@
 
 					<p id="b_url" style="margin-top: 20px;"></p>
 
-					<script type="module" src="./assets/js/build_url.js"></script>
 					<script type="module">
 						import { CAP_API_ENDPOINT } from './assets/js/config.js';
 						import { build_url } from './assets/js/build_url.js';
@@ -77,15 +76,11 @@
 						form.addEventListener("submit", function (e) {
 							e.preventDefault();
 							if (capToken) {
-								build_url(capToken); // Pass capToken to build_url
+								build_url(capToken); // Access build_url from global scope
 							} else {
 								alert("请先完成人机验证。");
 							}
 						});
-
-						// Expose build_url and copyToClipboard to the global scope for onclick
-						window.build_url = build_url;
-						window.copyToClipboard = copyToClipboard;
 					</script>
 				</div>
 

@@ -7,7 +7,7 @@ import { GITHUB_PAGES_URL } from './config.js';
  * Handles the short URL generation process.
  * @param {string} capToken - The CAPTCHA token from Cap.js.
  */
-async function build_url(capToken) {
+export async function build_url(capToken) {
     const urlInput = document.querySelector('#url');
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
@@ -60,7 +60,7 @@ async function build_url(capToken) {
 /**
  * Copies the given text to the user's clipboard.
  */
-function copyToClipboard(text) {
+window.copyToClipboard = function(text) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
             alert('短链接已复制到剪贴板！');
