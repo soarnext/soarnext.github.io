@@ -1,9 +1,10 @@
 # Lianjie
 ### 本项目fork自CalmXin的[xin-tencent-fang-hong](https://github.com/CalmXin/xin-tencent-fang-hong)
 ## 项目简介
-这是一个基于GitHub Pages和Cloudflare Worker/D1数据库构建的短链接生成器，旨在帮助用户生成防屏蔽/防红的短链接，方便在微信、QQ等平台分享。
+这是一个基于GitHub Pages、github.io、Cloudflare Workers和Cloudflare D1数据库构建的防红短链接生成器
 
 ## 功能特性
+- **防红域名**：可使用GitHub Pages的github.io作为防红域名，无需申请。
 - **自定义短链接**：使用您自己的Cloudflare Worker和D1数据库作为后端。(免费版即可)
 - **链接去重**：如果相同的长链接已被缩短过，将直接返回之前生成的短链接，避免重复创建。
 - **高级选项**：
