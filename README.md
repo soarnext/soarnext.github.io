@@ -23,15 +23,8 @@
 本项目的部署分为两大部分：**前端（GitHub Pages）** 和 **后端（Cloudflare Worker & D1）**。
 
 ### 1. 前端部署 (GitHub Pages)
-
-1.  **克隆仓库**：
-    ```bash
-    git clone https://github.com/soarnext/soarnext.github.io.git
-    cd soarnext.github.io
-    ```
-2.  **上传到GitHub**：
-    将此仓库的内容上传到您的GitHub账户下的一个新仓库。
-3.  **启用GitHub Pages**：
+1. **Fork本仓库** [点击此链接](https://github.com/soarnext/lianjie/fork)或点击仓库右上角`Fork`按钮。
+2.  **启用GitHub Pages**：
     在您的GitHub仓库设置中，找到 `Pages` 选项，选择 `main` 分支作为部署来源，并选择 `/ (root)` 目录。保存后，GitHub Pages会自动部署您的网站。
     您的前端网站URL将是 `https://<您的用户名>.github.io/<您的仓库名>/` (如果仓库名称为<您的用户名>.github.io，可使用<您的用户名>.github.io访问) 
 
@@ -70,9 +63,9 @@
 #### 2.2. Cloudflare Worker 部署
 
 1.  **创建Worker**：
-    在Cloudflare控制台中，导航到 `Workers & Pages`，点击 `创建` -> `从 Hello World! 开始`，给您的Worker起一个名字（例如：`my-shortener-worker`）。
+    在Cloudflare控制台中，导航到 `Workers & Pages`，点击 `创建` -> `从 Hello World! 开始`，给您的Worker起一个名字（例如：`my-shortener-worker`），点击`部署`。
 2.  **编辑Worker代码**：
-    进入您创建的Worker页面，点击 `编辑代码` ，将本项目根目录下的 `worker.js` 文件内容复制并粘贴到Worker的代码编辑器中，点击`部署`。
+    进入您创建的Worker页面(标题:成功！您的项目已部署到以下区域：全球)，点击 `编辑代码` ，将本项目根目录下的 `worker.js` 文件内容复制并粘贴到Worker的代码编辑器中，点击`部署`。
 3.  **绑定D1数据库**：
     在Worker的设置页面，找到 `绑定` -> `添加绑定` -> `D1 数据库`。
     点击 `添加绑定`：
