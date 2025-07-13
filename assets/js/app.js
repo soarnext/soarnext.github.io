@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     widget.addEventListener("solve", function (e) {
         window.capToken = e.detail.token;
         modal.style.display = "none";
+        document.getElementById('main-container').classList.remove('no-blur');
         build_url(window.capToken);
     });
 
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             build_url(window.capToken);
         } else {
             modal.style.display = "flex";
+            document.getElementById('main-container').classList.add('no-blur');
         }
     });
 
@@ -37,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener("click", function (e) {
         if (e.target === modal) {
             modal.style.display = "none";
+            document.getElementById('main-container').classList.remove('no-blur');
             const resultElement = document.getElementById('b_url');
             resultElement.innerHTML = `<span style="color: #ff4d4f;">请先完成人机验证。</span>`;
         }
