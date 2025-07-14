@@ -64,6 +64,9 @@ export async function build_url(capToken) {
     } catch (error) {
         console.error('Error generating short URL:', error);
         resultElement.innerHTML = `<span style="color: #ff4d4f;">生成失败：${error.message}</span>`;
+        // Reset the CAPTCHA widget
+        window.capToken = null;
+        document.querySelector("#cap").reset();
     }
 }
 

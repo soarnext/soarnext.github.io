@@ -8,3 +8,8 @@ cap-widget {
     --cap-spinner-background-color: #424242;
     --cap-border-radius: 12px;
 }
+
+#tips {
+    background-color: transparent;
+    box-shadow: none;
+}
