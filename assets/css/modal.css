@@ -15,6 +15,23 @@
     align-items: center;
 }
 
+.close-btn {
+    display: none; /* Hidden by default */
+}
+
+@media screen and (max-width: 768px) {
+    .close-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: #fff;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+}
+
 #captcha-modal .modal-content {
     background-color: transparent;
     border: none;

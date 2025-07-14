@@ -36,14 +36,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const alertModal = document.getElementById("alert-modal");
 
+    function closeModal() {
+        modal.style.display = "none";
+        document.getElementById('main-container').classList.remove('no-blur');
+        const resultElement = document.getElementById('b_url');
+        resultElement.innerHTML = `<span style="color: #ff4d4f;">请先完成人机验证。</span>`;
+    }
+
     modal.addEventListener("click", function (e) {
         if (e.target === modal) {
-            modal.style.display = "none";
-            document.getElementById('main-container').classList.remove('no-blur');
-            const resultElement = document.getElementById('b_url');
-            resultElement.innerHTML = `<span style="color: #ff4d4f;">请先完成人机验证。</span>`;
+            closeModal();
         }
     });
+
+    const closeBtn = document.querySelector(".close-btn");
+    closeBtn.addEventListener("click", closeModal);
+    closeBtn.addEventListener("touchend", closeModal);
 
     const alertOkBtn = document.getElementById("alert-ok-btn");
 
