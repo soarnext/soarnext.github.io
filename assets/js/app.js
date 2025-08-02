@@ -12,12 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modal = document.getElementById("captcha-modal");
     window.capToken = null;
+    let currentUrlToShorten = ''; // 新增变量，用于存储待处理的URL
 
     widget.addEventListener("solve", function (e) {
         window.capToken = e.detail.token;
         modal.style.display = "none";
         document.getElementById('main-container').classList.remove('no-blur');
-        build_url(window.capToken);
+        build_url(window.capToken, currentUrlToShorten); // 传递存储的URL
     });
 
     widget.addEventListener("reset", function () {
@@ -33,15 +34,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
             url = 'https://' + url;
         }
-        urlInput.value = url; // 更新输入框的值
+        currentUrlToShorten = url; // 存储处理后的URL
+
+        // 在发送请求或显示验证码之前，先进行URL验证
+        if (!isValidHttpUrl(currentUrlToShorten)) {
+            const resultElement = document.getElementById('b_url');
+            resultElement.innerHTML = `<span style="color: #ff4d4f;">请输入有效的链接</span>`;
+            return; // 如果URL无效，则停止执行
+        }
 
         if (window.capToken) {
-            build_url(window.capToken);
+            build_url(window.capToken, currentUrlToShorten); // 传递存储的URL
         } else {
             modal.style.display = "flex";
             document.getElementById('main-container').classList.add('no-blur');
         }
     });
+
+    // 将 isValidHttpUrl 函数从 build_url.js 复制到 app.js，以便在 app.js 中直接使用
+    function isValidHttpUrl(string) {
+        try {
+            const url = new URL(string);
+            // 进一步验证协议和主机名，确保是有效的HTTP/HTTPS URL
+            // 检查协议是否为http或https
+            const isHttpOrHttps = url.protocol === 'http:' || url.protocol === 'https:';
+            // 检查主机名是否存在且不为空，并且包含点号（基本域名结构）
+            const hasValidHostname = url.hostname && url.hostname.includes('.');
+
+            return isHttpOrHttps && hasValidHostname;
+        } catch (_) {
+            return false;
+        }
+    }
 
     const alertModal = document.getElementById("alert-modal");
 

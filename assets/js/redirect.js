@@ -23,18 +23,27 @@ import { WORKER_URL, WECHAT_OFFICIAL_CHECK_API, WECHAT_PROXY_API, FORCE_CHECK_DO
             const isQQ = ua.indexOf('qq') !== -1;
             const isMobile = /iphone|ipad|ipod|android/.test(ua);
 
+            // Helper function to escape HTML to prevent XSS
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.appendChild(document.createTextNode(str));
+                return div.innerHTML;
+            }
+
             // 函数：显示外部浏览器打开提示
             function showExternalBrowserPrompt(apiMessage = '', isBlocked = false) {
                 let instructionHTML = '';
+                const escapedApiMessage = escapeHTML(apiMessage); // Escape API message
+
                 if (isBlocked) {
                     instructionHTML += `<h2>本网站已被拦截\n请在外部浏览器中打开</h2>`;
-                    if (apiMessage) {
-                        instructionHTML += `<p>原因：${apiMessage}</p>`; // 更明确地显示拦截原因
+                    if (escapedApiMessage) {
+                        instructionHTML += `<p>原因：${escapedApiMessage}</p>`; // 更明确地显示拦截原因
                     }
                 } else {
                     instructionHTML += '<h2>请在外部浏览器中打开</h2>';
-                    if (apiMessage) {
-                        instructionHTML += `<p>检测结果：${apiMessage}</p>`;
+                    if (escapedApiMessage) {
+                        instructionHTML += `<p>检测结果：${escapedApiMessage}</p>`;
                     }
                 }
                 
@@ -114,7 +123,7 @@ import { WORKER_URL, WECHAT_OFFICIAL_CHECK_API, WECHAT_PROXY_API, FORCE_CHECK_DO
                 })
                 .catch(error => {
                     console.error('Redirect error:', error);
-                    document.getElementById('tips').innerHTML = `<h2>跳转失败</h2><p>${error.message}</p>`;
+                    document.getElementById('tips').innerHTML = `<h2>跳转失败</h2><p>${escapeHTML(error.message)}</p>`; // Escape error message
                 });
         }
         // If no 'id', the script does nothing and the rest of the page loads normally.

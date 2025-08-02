@@ -6,14 +6,13 @@ import { GITHUB_PAGES_URL } from './config.js';
 /**
  * Handles the short URL generation process.
  * @param {string} capToken - The CAPTCHA token from Cap.js.
+ * @param {string} longUrl - The long URL to be shortened.
  */
-export async function build_url(capToken) {
-    const urlInput = document.querySelector('#url');
+export async function build_url(capToken, longUrl) {
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
     const resultElement = document.getElementById('b_url');
 
-    const longUrl = urlInput.value.trim();
     const expiresInHours = parseFloat(expiresInHoursInput.value) || null;
     const maxVisits = parseInt(maxVisitsInput.value, 10) || null;
 
@@ -63,7 +62,9 @@ export async function build_url(capToken) {
 
     } catch (error) {
         console.error('Error generating short URL:', error);
-        resultElement.innerHTML = `<span style="color: #ff4d4f;">生成失败：${error.message}</span>`;
+        // 使用 textContent 避免 XSS 风险
+        resultElement.textContent = `生成失败：${error.message}`;
+        resultElement.style.color = '#ff4d4f'; // 重新设置颜色，因为 textContent 会覆盖样式
         // Reset the CAPTCHA widget
         window.capToken = null;
         document.querySelector("#cap").reset();
