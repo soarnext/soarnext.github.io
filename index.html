@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>链接生成器</title>
+		<title>智能短链生成器</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -11,33 +11,59 @@
 		<link rel="stylesheet" href="assets/css/mobile.css" />
 	</head>
 			<body class="is-preload">
+				<script>
+					(function() {
+						"use strict";
+						function setBackgroundImage() {
+							const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+							const apiUrl = isMobile ? 'https://bing.biturl.top/?resolution=1366&format=json&index=0&mkt=zh-CN' : 'https://bing.biturl.top/?resolution=UHD&format=json&index=0&mkt=zh-CN';
+							const fallbackUrl = isMobile ? 'images/Mobile.jpg' : 'images/1.jpg';
 
-				<!-- This script will handle the redirection if an 'id' is present -->
+							fetch(apiUrl)
+								.then(response => response.json())
+								.then(data => {
+									const imageUrl = data.url;
+									const img = new Image();
+									img.src = imageUrl;
+									img.onload = function() {
+										document.body.style.backgroundImage = `url('${imageUrl}')`;
+									};
+									img.onerror = function() {
+										document.body.style.backgroundImage = `url('${fallbackUrl}')`;
+									};
+
+									const aboutCopyrightElement = document.getElementById('bing-copyright');
+									if (aboutCopyrightElement) {
+										aboutCopyrightElement.innerHTML = `背景版权: <a href="${data.copyright_link}" target="_blank">${data.copyright}</a>`;
+									}
+								})
+								.catch(error => {
+									console.error('Error fetching background image URL:', error);
+									document.body.style.backgroundImage = `url('${fallbackUrl}')`;
+									const aboutCopyrightElement = document.getElementById('bing-copyright');
+									if (aboutCopyrightElement) {
+										aboutCopyrightElement.innerHTML = '';
+									}
+								});
+
+							document.body.style.backgroundSize = 'cover';
+							document.body.style.backgroundPosition = 'center center';
+							document.body.style.backgroundAttachment = 'fixed';
+						}
+						setBackgroundImage();
+					})();
+				</script>
+
 				<script type="module" src="./assets/js/redirect.js"></script>
 
-				<!-- Main Content - This will only be visible if not redirecting -->
 				<div id="main-container">
-					<!-- Header -->
 					<header id="header">
-						<h1>链接生成器</h1>
-						<p>输入您的链接，生成一个防屏蔽的短链接</p>
+						<h1>翛链</h1>
+						<p>智能短链生成器</p>
 					</header>
 
-					<!-- Signup Form -->
 					<form id="signup-form" method="post" action="#">
-						<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
-						<div id="captcha-modal" class="modal">
-							<div class="modal-content">
-								<cap-widget
-									id="cap"
-									data-cap-api-endpoint=""
-									data-cap-i18n-verifying-label="验证中..."
-									data-cap-i18n-initial-state="我是人类"
-									data-cap-i18n-solved-label="验证成功"
-									data-cap-i18n-error-label="验证失败"
-								></cap-widget>
-							</div>
-						</div>
+						<input type="text" name="url" id="url" placeholder="请输入您的长链接" />
 						<input type="submit" value="生成链接" />
 					</form>
 					<div id="alert-modal" class="modal">
@@ -53,7 +79,6 @@
 						</div>
 					</div>
 
-					<!-- Advanced Options -->
 					<div id="advanced-options">
 						<a href="#" onclick="toggleAdvanced(); return false;">高级选项</a>
 						<div id="advanced-fields">
@@ -73,19 +98,16 @@
 					<script type="module" src="assets/js/app.js"></script>
 				</div>
 
-				<!-- Footer -->
 				<footer id="footer">
 					<ul class="icons">
-						<li><a href="https://github.com/soarnext/soarnext.github.io" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+						<li><a href="https://github.com/xiaosoar/lianjie" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
 					</ul>
 					<ul class="copyright">
-						<li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank">xiaosoar</a></li>
+						<li>&copy; Powered by <a href="https://xsoar.cfd" target="_blank">翛Soar</a></li>
 					</ul>
+					<p id="bing-copyright" style="font-size: 0.7em; color: #bbb; margin-top: 0.5em;"></p>
 				</footer>
 
-				<!-- Scripts -->
 				<script src="assets/js/main.js"></script>
-				<script src="https://cap.shandian.eu.org/assets/widget.js"></script>
-				<script src="https://cap.shandian.eu.org/assets/floating.js"></script>
 			</body>
 		</html>

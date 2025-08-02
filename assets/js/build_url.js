@@ -1,21 +1,22 @@
 import { WORKER_URL } from './config.js';
 
-// --- Configuration ---
-import { GITHUB_PAGES_URL } from './config.js';
-
 /**
  * Handles the short URL generation process.
- * @param {string} capToken - The CAPTCHA token from Cap.js.
  */
-export async function build_url(capToken) {
+export async function build_url() {
     const urlInput = document.querySelector('#url');
     const expiresInHoursInput = document.querySelector('#expiresInHours');
     const maxVisitsInput = document.querySelector('#maxVisits');
     const resultElement = document.getElementById('b_url');
 
-    const longUrl = urlInput.value.trim();
+    let longUrl = urlInput.value.trim();
     const expiresInHours = parseFloat(expiresInHoursInput.value) || null;
     const maxVisits = parseInt(maxVisitsInput.value, 10) || null;
+
+    // Automatically add https:// if protocol is missing
+    if (longUrl !== "" && !longUrl.startsWith('http://') && !longUrl.startsWith('https://')) {
+        longUrl = 'https://' + longUrl;
+    }
 
     if (longUrl === "" || !isValidHttpUrl(longUrl)) {
         resultElement.innerHTML = `<span style="color: #ff4d4f;">请输入有效的链接（以 http/https 开头）。</span>`;
@@ -28,8 +29,7 @@ export async function build_url(capToken) {
         const payload = {
             url: longUrl,
             expiresInHours: expiresInHours,
-            maxVisits: maxVisits,
-            capToken: capToken // Add the CAPTCHA token to the payload
+            maxVisits: maxVisits
         };
 
         const response = await fetch(WORKER_URL, {
@@ -38,28 +38,39 @@ export async function build_url(capToken) {
             body: JSON.stringify(payload)
         });
 
-        if (response.status === 403) {
-            window.capToken = null;
-            document.querySelector("#cap").reset();
-            throw new Error('CAPTCHA 验证失败，请重试。');
-        }
-
         const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.error || `API Error: ${response.statusText}`);
         }
 
-        const shortUrl = new URL(`?id=${data.id}`, GITHUB_PAGES_URL).href;
+        const shortUrl = new URL(`?id=${data.id}`, window.location.origin).href;
 
-        resultElement.innerHTML = `
-            生成成功！短链接： <a href="${shortUrl}" target="_blank">${shortUrl}</a>
-            <button class="copy-btn" onclick="copyToClipboard('${shortUrl}')">复制</button>
-        `;
+        resultElement.innerHTML = ''; // Clear previous content
+
+        const successMessage = document.createElement('span');
+        successMessage.textContent = '生成成功！短链接： ';
+        resultElement.appendChild(successMessage);
+
+        const link = document.createElement('a');
+        link.href = shortUrl;
+        link.target = '_blank';
+        link.textContent = shortUrl;
+        resultElement.appendChild(link);
+
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-btn';
+        copyButton.textContent = '复制';
+        copyButton.onclick = () => copyToClipboard(shortUrl);
+        resultElement.appendChild(copyButton);
 
     } catch (error) {
         console.error('Error generating short URL:', error);
-        resultElement.innerHTML = `<span style="color: #ff4d4f;">生成失败：${error.message}</span>`;
+        resultElement.innerHTML = `<span style="color: #ff4d4f;">生成失败：</span>`;
+        const errorMessageSpan = document.createElement('span');
+        errorMessageSpan.style.color = '#ff4d4f';
+        errorMessageSpan.textContent = error.message;
+        resultElement.appendChild(errorMessageSpan);
     }
 }
 
@@ -104,7 +115,8 @@ window.copyToClipboard = function(text) {
 function isValidHttpUrl(string) {
     try {
         const url = new URL(string);
-        return url.protocol === 'http:' || url.protocol === 'https:';
+        // More robust check for http/https and a basic domain structure
+        return (url.protocol === 'http:' || url.protocol === 'https:') && url.hostname.includes('.');
     } catch (_) {
         return false;
     }

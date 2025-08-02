@@ -28,35 +28,6 @@
 			}, 100);
 		});
 
-	// 根据设备类型设置背景图片
-	function setBackgroundImage() {
-		const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-		const apiUrl = isMobile ? 'https://bing.img.run/m.php' : 'https://bing.img.run/1920x1080.php';
-		const fallbackUrl = isMobile ? 'images/Mobile.jpg' : 'images/1.jpg';
-
-		const img = new Image();
-		img.src = apiUrl;
-		img.onload = function() {
-			document.body.style.backgroundImage = `url('${apiUrl}')`;
-		};
-		img.onerror = function() {
-			document.body.style.backgroundImage = `url('${fallbackUrl}')`;
-		};
-
-		document.body.style.backgroundSize = 'cover';
-		document.body.style.backgroundPosition = 'center center';
-		document.body.style.backgroundAttachment = 'fixed';
-
-		// 直接设置版权颜色为白色并添加阴影，以确保在任何背景下都可见
-		const footerElement = document.getElementById('footer');
-		if (footerElement) {
-			footerElement.style.color = 'rgba(255, 255, 255, 0.85)'; // 白色
-			footerElement.style.textShadow = '0 0 5px rgba(0,0,0,0.5)'; // 黑色阴影
-		}
-	}
-
-	// 页面加载时调用
-	window.onload = setBackgroundImage;
 
 	// 高级选项切换函数
 	window.toggleAdvanced = function() {

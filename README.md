@@ -1,7 +1,10 @@
-# Lianjie
-**注意：这是一个Beta版本，可能存在一些未知问题。**
+# 翛链
+
 
 ### 本项目fork自CalmXin的[xin-tencent-fang-hong](https://github.com/CalmXin/xin-tencent-fang-hong)
+
+### 完整在线版(翛链-智能短链生成器)[https://dl.xsoar.cfd]
+
 ## 项目简介
 这是一个基于GitHub Pages、github.io、Cloudflare Workers和Cloudflare D1数据库构建的防红短链接生成器
 
