@@ -1,9 +1,10 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>链接生成器</title>
+		<title>翛链 - 短链生成器</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="https://jsd.cdn.zzko.cn/gh/soarnext/picx-images-hosting@master/favicon.3nrwatry07.webp" type="image/webp">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/modal.css" />
 		<link rel="stylesheet" href="assets/css/alert-modal.css" />
@@ -11,6 +12,51 @@
 		<link rel="stylesheet" href="assets/css/mobile.css" />
 	</head>
 			<body class="is-preload">
+				<script>
+					// 立即调用背景设置函数，确保背景图片尽早加载
+					(function() {
+						"use strict";
+						function setBackgroundImage() {
+							const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+							const apiUrl = isMobile ? 'https://bing.biturl.top/?resolution=1366&format=json&index=0&mkt=zh-CN' : 'https://bing.biturl.top/?resolution=UHD&format=json&index=0&mkt=zh-CN';
+							const fallbackUrl = isMobile ? 'images/Mobile.jpg' : 'images/1.jpg';
+
+							fetch(apiUrl)
+								.then(response => response.json())
+								.then(data => {
+									const imageUrl = data.url; // 从JSON中获取图片URL
+									const img = new Image();
+									img.src = imageUrl;
+									img.onload = function() {
+										document.body.style.backgroundImage = `url('${imageUrl}')`;
+									};
+									img.onerror = function() {
+										document.body.style.backgroundImage = `url('${fallbackUrl}')`;
+									};
+
+									// 更新关于页面中的版权信息
+									const aboutCopyrightElement = document.getElementById('bing-copyright');
+									if (aboutCopyrightElement) {
+										aboutCopyrightElement.innerHTML = `背景图片版权: <a href="${data.copyright_link}" target="_blank">${data.copyright}</a>`;
+									}
+								})
+								.catch(error => {
+									console.error('Error fetching background image URL:', error);
+									document.body.style.backgroundImage = `url('${fallbackUrl}')`;
+									// 如果获取失败，也清空或显示默认版权信息
+									const aboutCopyrightElement = document.getElementById('bing-copyright');
+									if (aboutCopyrightElement) {
+										aboutCopyrightElement.innerHTML = ''; // 或者显示一个默认的“无版权信息”
+									}
+								});
+
+							document.body.style.backgroundSize = 'cover';
+							document.body.style.backgroundPosition = 'center center';
+							document.body.style.backgroundAttachment = 'fixed';
+						}
+						setBackgroundImage();
+					})();
+				</script>
 
 				<!-- This script will handle the redirection if an 'id' is present -->
 				<script type="module" src="./assets/js/redirect.js"></script>
@@ -19,13 +65,13 @@
 				<div id="main-container">
 					<!-- Header -->
 					<header id="header">
-						<h1>链接生成器</h1>
-						<p>输入您的链接，生成一个防屏蔽的短链接</p>
+						<h2>翛链</h2>
+						<p>智能短链生成器</p>
 					</header>
 
 					<!-- Signup Form -->
 					<form id="signup-form" method="post" action="#">
-						<input type="url" name="url" id="url" placeholder="请输入您的长链接" />
+						<input type="url" name="url" id="url" placeholder="请输入您的链接" />
 						<div id="captcha-modal" class="modal">
 							<div class="modal-content">
 								<span class="close-btn">&times;</span>
@@ -69,24 +115,37 @@
 						</div>
 					</div>
 
+					<a href="#" class="button" onclick="openAboutModal(); return false;" style="margin-top: 1em;">关于</a>
+
 					<p id="b_url" style="margin-top: 20px;"></p>
 
 					<script type="module" src="assets/js/app.js"></script>
 				</div>
 
-				<!-- Footer -->
-				<footer id="footer">
-					<ul class="icons">
-						<li><a href="https://github.com/soarnext/soarnext.github.io" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; Powered by <a href="https://yxc.us.kg" target="_blank">xiaosoar</a></li>
-					</ul>
-				</footer>
+				<!-- About Modal -->
+				<div id="about-modal" class="modal">
+					<div class="modal-content">
+						<span class="close-button" onclick="closeAboutModal()">&times;</span>
+						<div class="about-content">
+							<img src="https://jsd.cdn.zzko.cn/gh/soarnext/picx-images-hosting@master/logo-ha.webp" alt="Logo" class="about-logo">
+							<h2>翛链</h2>
+							<p class="version">0.1.0</p>
+							<p id="about-uptime" style="font-size: 0.9em; color: #bbb; margin-bottom: 15px;"></p>
+							<p class="author">由<a href="https://xsoar.cfd" target="_blank">翛Soar</a>为您呈现</p>
+							<p class="copyright-info">© 2025 翛Soar | <a href="terms.html" target="_blank">服务条款</a> | <a href="privacy.html" target="_blank">隐私政策</a></p>
+							<p id="bing-copyright" style="font-size: 0.7em; color: #bbb; margin-top: 1em;"></p>
+							<ul class="social-icons">
+								<li><a href="https://github.com/soarnext/lianjie" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
 
 				<!-- Scripts -->
 				<script src="assets/js/main.js"></script>
-				<script src="https://cap.shandian.eu.org/assets/widget.js"></script>
-				<script src="https://cap.shandian.eu.org/assets/floating.js"></script>
+				<!-- 将外部脚本添加 defer 属性，使其异步加载，不阻塞HTML解析 -->
+				<script src="https://cap.shandian.eu.org/assets/widget.js" defer></script>
+				<script src="https://cap.shandian.eu.org/assets/floating.js" defer></script>
 			</body>
 		</html>

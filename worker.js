@@ -9,7 +9,7 @@
  */
 
 const CAP_SERVER_BASE_URL = 'https://cap.shandian.eu.org';
-const CAP_SITE_KEY = '9560e59447'; // Updated based on user's latest preference
+const CAP_SITE_KEY = '3cdb5a3793'; // Updated based on user's latest preference
 
 export default {
     async fetch(request, env) {
@@ -30,6 +30,9 @@ export default {
         }
         if (request.method === 'POST' && path === '/') {
             return handleCreateShortUrl(request, env);
+        }
+        if (request.method === 'GET' && path === '/wechat-check-proxy') {
+            return handleWechatCheckProxy(request);
         }
         if (request.method === 'GET' && path.length > 1) {
             let id = path.substring(1);
@@ -208,6 +211,29 @@ function isValidHttpUrl(string) {
     }
 }
 
+// Function to extract main domain (eTLD+1) - simplified, does not fully handle Public Suffix List
+function getMainDomain(url) {
+    try {
+        const hostname = new URL(url).hostname;
+        // Simple check for IP address
+        if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname)) {
+            return hostname;
+        }
+        const parts = hostname.split('.');
+        // For domains like example.com, returns example.com
+        // For domains like sub.example.com, returns example.com
+        // For domains like example.co.uk, this simplified version will return co.uk, which is incorrect.
+        // A full solution requires a Public Suffix List.
+        if (parts.length > 2) {
+            return parts.slice(-2).join('.');
+        }
+        return hostname;
+    } catch (e) {
+        console.error("Error getting main domain:", e);
+        return null;
+    }
+}
+
 function corsHeaders(extraHeaders = {}) {
     return {
         'Access-Control-Allow-Origin': '*',
@@ -226,5 +252,55 @@ function handleOptions(request) {
         return new Response(null, { headers: corsHeaders() });
     } else {
         return new Response(null, { headers: { Allow: 'GET, POST, OPTIONS' } });
+    }
+}
+
+// New function to proxy WeChat domain check API
+async function handleWechatCheckProxy(request) {
+    const url = new URL(request.url);
+    const targetUrl = url.searchParams.get('url'); // Get the URL to check from query params
+
+    if (!targetUrl) {
+        return new Response(JSON.stringify({ error: 'URL parameter missing for WeChat check proxy.' }), { status: 400, headers: corsHeaders() });
+    }
+
+    const cacheKey = new Request(request.url, request);
+    const cache = caches.default;
+
+    // 尝试从缓存中获取响应
+    let response = await cache.match(cacheKey);
+    if (response) {
+        console.log('Cache hit for WeChat check:', targetUrl);
+        return response;
+    }
+
+    console.log('Cache miss for WeChat check:', targetUrl);
+    const domainToCheck = getMainDomain(targetUrl);
+    if (!domainToCheck) {
+        return new Response(JSON.stringify({ error: '无法解析目标域名。' }), { status: 400, headers: corsHeaders() });
+    }
+    const officialApiUrl = `https://cgi.urlsec.qq.com/index.php?m=url&a=validUrl&url=${encodeURIComponent(domainToCheck)}`;
+
+    try {
+        const apiResponse = await fetch(officialApiUrl);
+        const data = await apiResponse.json();
+        
+        // 如果reCode为0且data为"ok"，则修改data字段
+        if (data.reCode === 0 && data.data === "ok") {
+            data.data = "本网站已被拦截";
+        }
+
+        // 创建响应并缓存
+        response = new Response(JSON.stringify(data), {
+            headers: corsHeaders({ 'Content-Type': 'application/json' }),
+        });
+        // 缓存微信域名检测结果，例如缓存1小时 (3600秒)，因为域名状态变化不频繁
+        response.headers.append('Cache-Control', 'public, max-age=3600');
+        await cache.put(cacheKey, response.clone());
+
+        return response;
+    } catch (error) {
+        console.error('Error fetching from WeChat Official API via proxy:', error);
+        return new Response(JSON.stringify({ error: 'Failed to proxy WeChat API request.', details: error.message }), { status: 500, headers: corsHeaders() });
     }
 }

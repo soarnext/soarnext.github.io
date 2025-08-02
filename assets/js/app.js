@@ -64,4 +64,31 @@ document.addEventListener('DOMContentLoaded', () => {
     alertOkBtn.addEventListener("click", function () {
         alertModal.style.display = "none";
     });
+
+    // 计算并显示网站运行天数和制作信息
+    const launchDate = new Date('2025-07-11T00:00:00Z'); // 请替换为您的网站上线日期
+    const now = new Date();
+    const diffTime = Math.abs(now - launchDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // 更新关于页面中的网站运行天数
+    const aboutUptimeElement = document.getElementById('about-uptime');
+    if (aboutUptimeElement) {
+        aboutUptimeElement.textContent = `本站已运行 ${diffDays} 天`;
+    }
+
+    console.log(`%c本站已运行 ${diffDays} 天`, 'color: #4CAF50; font-size: 16px; font-weight: bold;');
+    console.log(`%c本站由 %c翛Soar%c 制作`, 
+        'color: #2196F3; font-size: 14px;', // Style for "本站由 "
+        'color: #FF5722; font-size: 14px; font-weight: bold; text-decoration: underline; cursor: pointer;', // Style for "翛Soar"
+        'color: #2196F3; font-size: 14px;' // Style for " 制作"
+    );
+    console.log(`%c作者主页: %chttps://xsoar.cfd`, 
+        'color: #607D8B; font-size: 12px;', // Style for "作者主页: "
+        'color: #00BCD4; font-size: 12px; text-decoration: underline; cursor: pointer;' // Style for URL
+    );
+    console.log(`%c项目链接: %chttps://github.com/soarnext/lianjie`, 
+        'color: #607D8B; font-size: 12px;', // Style for "项目链接: "
+        'color: #00BCD4; font-size: 12px; text-decoration: underline; cursor: pointer;' // Style for URL
+    );
 });

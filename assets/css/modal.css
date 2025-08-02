@@ -15,6 +15,116 @@
     align-items: center;
 }
 
+/* About Modal Specific Styles */
+#about-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    backdrop-filter: blur(30px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(30px);
+    justify-content: center;
+    align-items: center;
+}
+
+#about-modal .modal-content {
+    background-color: #2a2a2a; /* Dark background for the modal content */
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be adjusted */
+    max-width: 500px; /* Max width for larger screens */
+    border-radius: 10px;
+    position: relative; /* For positioning the close button */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    text-align: center;
+    color: #fff; /* White text color */
+}
+
+#about-modal .close-button {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#about-modal .close-button:hover,
+#about-modal .close-button:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.about-content {
+    padding: 20px;
+}
+
+.about-logo {
+    width: 50%; /* Adjust size as needed */
+    /* height: 100px; */
+    margin-bottom: 20px;
+    /* border-radius: 50%; */ /* If it's a circular logo */
+}
+
+.about-content h2 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.about-content .version {
+    font-size: 0.9em;
+    color: #bbb;
+    margin-bottom: 15px;
+}
+
+.about-content .author {
+    font-size: 1em;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.about-content .copyright-info {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.about-content .copyright-info a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.about-content .copyright-info a:hover {
+    text-decoration: underline;
+}
+
+.social-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between icons */
+}
+
+.social-icons li a {
+    color: #fff;
+    font-size: 1.5em;
+    transition: color 0.3s ease-in-out;
+}
+
+.social-icons li a:hover {
+    color: #007bff; /* Example hover color */
+}
+
 .close-btn {
     display: none; /* Hidden by default */
 }
