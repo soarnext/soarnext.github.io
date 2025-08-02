@@ -13,7 +13,6 @@
 	</head>
 			<body class="is-preload">
 				<script>
-					// 立即调用背景设置函数，确保背景图片尽早加载
 					(function() {
 						"use strict";
 						function setBackgroundImage() {
@@ -24,7 +23,7 @@
 							fetch(apiUrl)
 								.then(response => response.json())
 								.then(data => {
-									const imageUrl = data.url; // 从JSON中获取图片URL
+									const imageUrl = data.url;
 									const img = new Image();
 									img.src = imageUrl;
 									img.onload = function() {
@@ -34,7 +33,6 @@
 										document.body.style.backgroundImage = `url('${fallbackUrl}')`;
 									};
 
-									// 更新关于页面中的版权信息
 									const aboutCopyrightElement = document.getElementById('bing-copyright');
 									if (aboutCopyrightElement) {
 										aboutCopyrightElement.innerHTML = `背景图片版权: <a href="${data.copyright_link}" target="_blank">${data.copyright}</a>`;
@@ -43,10 +41,9 @@
 								.catch(error => {
 									console.error('Error fetching background image URL:', error);
 									document.body.style.backgroundImage = `url('${fallbackUrl}')`;
-									// 如果获取失败，也清空或显示默认版权信息
 									const aboutCopyrightElement = document.getElementById('bing-copyright');
 									if (aboutCopyrightElement) {
-										aboutCopyrightElement.innerHTML = ''; // 或者显示一个默认的“无版权信息”
+										aboutCopyrightElement.innerHTML = '';
 									}
 								});
 
@@ -58,18 +55,14 @@
 					})();
 				</script>
 
-				<!-- This script will handle the redirection if an 'id' is present -->
 				<script type="module" src="./assets/js/redirect.js"></script>
 
-				<!-- Main Content - This will only be visible if not redirecting -->
 				<div id="main-container">
-					<!-- Header -->
 					<header id="header">
 						<h2>翛链</h2>
 						<p>智能短链生成器</p>
 					</header>
 
-					<!-- Signup Form -->
 					<form id="signup-form" method="post" action="#">
 						<input type="url" name="url" id="url" placeholder="请输入您的链接" />
 						<div id="captcha-modal" class="modal">
@@ -100,7 +93,6 @@
 						</div>
 					</div>
 
-					<!-- Advanced Options -->
 					<div id="advanced-options">
 						<a href="#" onclick="toggleAdvanced(); return false;">高级选项</a>
 						<div id="advanced-fields">
@@ -122,7 +114,6 @@
 					<script type="module" src="assets/js/app.js"></script>
 				</div>
 
-				<!-- About Modal -->
 				<div id="about-modal" class="modal">
 					<div class="modal-content">
 						<span class="close-button" onclick="closeAboutModal()">&times;</span>
@@ -142,9 +133,7 @@
 				</div>
 
 
-				<!-- Scripts -->
 				<script src="assets/js/main.js"></script>
-				<!-- 将外部脚本添加 defer 属性，使其异步加载，不阻塞HTML解析 -->
 				<script src="https://cap.shandian.eu.org/assets/widget.js" defer></script>
 				<script src="https://cap.shandian.eu.org/assets/floating.js" defer></script>
 			</body>
