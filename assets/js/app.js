@@ -26,6 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
+        const urlInput = document.getElementById('url');
+        let url = urlInput.value.trim();
+
+        // 如果URL没有http://或https://前缀，则自动添加https://
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+        urlInput.value = url; // 更新输入框的值
+
         if (window.capToken) {
             build_url(window.capToken);
         } else {
