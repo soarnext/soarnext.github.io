@@ -124,4 +124,19 @@ document.addEventListener('DOMContentLoaded', () => {
         'color: #607D8B; font-size: 12px;', // Style for "项目链接: "
         'color: #00BCD4; font-size: 12px; text-decoration: underline; cursor: pointer;' // Style for URL
     );
+
+    // Dynamically load captcha scripts
+    function loadCaptchaScripts() {
+        const script1 = document.createElement('script');
+        script1.src = 'https://cap.shandian.eu.org/assets/widget.js';
+        script1.defer = true;
+        document.body.appendChild(script1);
+
+        const script2 = document.createElement('script');
+        script2.src = 'https://cap.shandian.eu.org/assets/floating.js';
+        script2.defer = true;
+        document.body.appendChild(script2);
+    }
+
+    loadCaptchaScripts(); // Call the function to load scripts
 });
